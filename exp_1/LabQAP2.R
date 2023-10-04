@@ -25,13 +25,13 @@ swap<-function(sol,i,j){
   sol[j]<-piv
   return(sol)
 }
-
+library(dplyr)
 insertar <- function(sol,i,j){
   copia_sol <- sol
   largo <- length(sol)
-  for(l in 1:largo){
-    
-  }
+  # for(l in 1:largo){
+  # 
+  # }
 }
 
 invertir_elementos <- function(vector, i) {
