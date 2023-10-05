@@ -1,0 +1,13 @@
+PRUEBA CON SA
+
+Simulated Annealing: 63.5 sec elapsed
+> print(mean)
+[1] 4738240
+> print(best_f)
+[1] 4634276
+> print(best_sol)
+[[1]]
+ [1]  5  2 11 14 12 23 21 26 18 19 20  4  9 13 17 25  7 15  1 10  6 16  8  3 24 22
+
+
+ 
