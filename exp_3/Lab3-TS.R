@@ -137,7 +137,7 @@ print(best_sol)
 # REUSANDO EL CÓDIGO NECESARIO DE LA AYUDANTÍA ANTERIOR
 ###############################################################################
 ###############################################################################
-
+library(tictoc)
 readQAP<-function(name){ 
   a <- read.delim(name,header=FALSE, sep ="")
   n<-as.integer(a[1,1])
@@ -216,7 +216,6 @@ tabu_search <- function(matriz_flujo, matriz_distancia, max_iteraciones, tabu_te
   return(list(solucion = best_solucion, costo = best_costoo))
 }
 
-# Generar matrices de flujos y distancias aleatorias para el ejemplo
 set.seed(123)
 max_iteraciones <- 100  # Número máximo de iteraciones
 tabu_tenure <- 15  # Tamaño de la lista tabú
