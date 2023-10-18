@@ -3,6 +3,7 @@
 
 # IMPORTACIÓN DE LIBRERIAS
 import math
+import os
 import random
 import time
 import matplotlib.pyplot as plt
@@ -17,27 +18,23 @@ class Solucion:
         self.ruta = ruta
         self.costo = calcular_costo(self, matriz_distancias)
 
-  def swap(self, i, j): #Definición función swap
-    nueva_ruta = self.ruta[:]
-    nueva_ruta[i], nueva_ruta[j] = nueva_ruta[j], nueva_ruta[i]
-    return Solucion(nueva_ruta)
-  
 # ALGORITMO 2-OPT
 def two_opt(sol):
     best_sol = Solucion(sol.ruta)
     # new_sol = Solucion()
-    improved = True
-    while improved:
-        improved = False
+    mejora = True
+    while mejora:
+        mejora = False
         for i in range(1, len(best_sol.ruta) - 2):
             for j in range(i + 2, len(best_sol.ruta)):
-                if j - i == 1:
-                    continue
+                # if j - i == 1:
+                #     print("buenos dias")
+                #     continue
                 new_sol = two_opt_swap(best_sol, i, j)
                 if new_sol.costo < best_sol.costo:
                     best_sol.ruta = new_sol.ruta
                     best_sol.costo = new_sol.costo
-                    improved = True
+                    mejora = True
     return best_sol
 
 # ALGORITMO 2-OPT SWAP
@@ -47,11 +44,11 @@ def two_opt_swap(sol, i, j):
 
 # CALCULO DE COSTO
 def calcular_costo(sol, matriz_distancias):
-  costo = 0
-  for i in range(len(sol.ruta) - 1):
-    costo += matriz_distancias[sol.ruta[i]][sol.ruta[i + 1]]
-  costo += matriz_distancias[sol.ruta[-1]][sol.ruta[0]]
-  return costo
+    costo = 0
+    for i in range(len(sol.ruta) - 1):
+        costo += matriz_distancias[sol.ruta[i]][sol.ruta[i + 1]]
+    costo += matriz_distancias[sol.ruta[-1]][sol.ruta[0]]
+    return costo
 
 # GENERAR SOLUCION INICIAL
 def generar_solucion_inicial(matriz_distancias):
@@ -64,18 +61,18 @@ def generar_solucion_inicial(matriz_distancias):
     sol.costo = calcular_costo(sol, matriz_distancias)
     return sol
 
-# BUSQUEDA LOCAL GUIADA        
+# BUSQUEDA LOCAL GUIADA   
 def busqueda_local_guiada(matriz_distancias, max_iteraciones):
-  # Inicializamos la solución con un recorrido circular aleatorio.
-  sol = generar_solucion_inicial(matriz_distancias)
-  # Bucle hasta que se alcance el número máximo de iteraciones.
-  for _ in range(max_iteraciones):
-    # Encontramos el vecino mejor de la solución actual.
-    mejor_vecino = two_opt(sol)
-    # Si el vecino mejor es mejor que la solución actual, lo reemplazamos.
-    if mejor_vecino.costo < sol.costo:
-      sol = mejor_vecino
-  return sol
+    # Inicializamos la solución con un recorrido circular aleatorio.
+    sol = generar_solucion_inicial(matriz_distancias)
+    # Bucle hasta que se alcance el número máximo de iteraciones.
+    for _ in range(max_iteraciones):
+        # Encontramos el vecino mejor de la solución actual.
+        mejor_vecino = two_opt(sol)
+        # Si el vecino mejor es mejor que la solución actual, lo reemplazamos.
+        if mejor_vecino.costo < sol.costo:
+            sol = mejor_vecino
+    return sol
 
 # LECTURA DE DATOS
 def lectura_archivo(nombre_archivo):
@@ -113,6 +110,7 @@ def calcular_distancia(puntos):
 # EJECUCION
 #####################################################################################################
 archivo = "qa194.tsp"
+ruta_completa = "resultados/resultados_" + archivo
 coordenadas = lectura_archivo(archivo)
 matriz_distancias = calcular_distancia(coordenadas)
 
@@ -124,7 +122,7 @@ best_solution = generar_solucion_inicial(matriz_distancias)
 historial_soluciones.append(best_solution.ruta)
 historial_costos.append(best_solution.costo)
 for _ in range(31):
-    sol = busqueda_local_guiada(matriz_distancias, 1000)
+    sol = busqueda_local_guiada(matriz_distancias, 100)
     historial_soluciones.append(sol.ruta)
     historial_costos.append(sol.costo)
     if sol.costo < best_solution.costo:
@@ -139,7 +137,7 @@ fin = time.time()
 print("Costo: ", best_solution.costo)
 print("Tiempo: ", fin - inicio)
 
-with open("resultados_" + archivo, 'a') as archivo:
+with open(ruta_completa, 'a') as archivo:
     for i in range(len(historial_soluciones)):
         archivo.write("Iteracion " + str(i) + ' \n')
         archivo.write("Solucion: " + str(historial_soluciones[i]) + ' \n')
