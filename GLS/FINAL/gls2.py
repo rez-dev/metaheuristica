@@ -22,6 +22,7 @@ class Solucion:
 def two_opt(sol):
     best_sol = Solucion(sol.ruta)
     mejora = True
+    costos = []
     while mejora:
         mejora = False
         for i in range(1, len(best_sol.ruta) - 2):
@@ -30,8 +31,9 @@ def two_opt(sol):
                 if new_sol.costo < best_sol.costo:
                     best_sol.ruta = new_sol.ruta
                     best_sol.costo = new_sol.costo
+                    costos.append(new_sol.costo)
                     mejora = True
-    return best_sol
+    return best_sol,costos
 
 # ALGORITMO 2-OPT SWAP
 def two_opt_swap(sol, i, j):
@@ -58,12 +60,14 @@ def generar_solucion_inicial(matriz_distancias):
 
 # BUSQUEDA LOCAL GUIADA   
 def busqueda_local_guiada(matriz_distancias, max_iteraciones):
+    costos = []
     sol = generar_solucion_inicial(matriz_distancias)
     for _ in range(max_iteraciones):
-        mejor_vecino = two_opt(sol)
+        mejor_vecino,costos2 = two_opt(sol)
+        costos = costos + costos2
         if mejor_vecino.costo < sol.costo:
             sol = mejor_vecino
-    return sol
+    return sol,costos
 
 # LECTURA DE DATOS
 def lectura_archivo(nombre_archivo):
@@ -100,7 +104,7 @@ def calcular_distancia(puntos):
 #####################################################################################################
 # EJECUCION
 #####################################################################################################
-archivo = "wi29.tsp"
+archivo = "qa194.tsp"
 ruta_completa = "resultados/resultados_" + archivo
 coordenadas = lectura_archivo(archivo)
 matriz_distancias = calcular_distancia(coordenadas)
@@ -112,12 +116,16 @@ inicio = time.time()
 best_solution = generar_solucion_inicial(matriz_distancias)
 historial_soluciones.append(best_solution.ruta)
 historial_costos.append(best_solution.costo)
+costos = []
 for _ in range(31):
-    sol = busqueda_local_guiada(matriz_distancias, 100)
+    sol,costos2 = busqueda_local_guiada(matriz_distancias, 150)
+    # costos = costos + costos2
+    # costos.append(costos2)
     historial_soluciones.append(sol.ruta)
     historial_costos.append(sol.costo)
     if sol.costo < best_solution.costo:
         best_solution = sol
+        costos = costos2 #mejores costos
 fin = time.time()
 
 # RESULTADOS
@@ -141,9 +149,9 @@ with open(ruta_completa, 'a') as archivo:
         # archivo.write("Solucion: " + str(best_solution.ruta) + ' \n')
         # archivo.write("Costo: " + str(best_solution.costo) + ' \n')
         # archivo.write("Tiempo: " + str(fin - inicio) + ' \n\n')
-
+# print(costos)
 # Crear el gráfico
-plt.plot(historial_costos, marker='o', linestyle='-')
+plt.plot(costos, marker='o', linestyle='-')
 # Configurar etiquetas y título
 plt.xlabel('Iteración')
 plt.ylabel('Costo')
