@@ -233,9 +233,9 @@ def guided_local_search(tsp, work, time_limit):
         best_obj = work.obj
         # set coefficient of penalized distance
         cur_work.alpha = PENALTY_RATIO * float(cur_work.length(tsp)) / float(len(cur_work.tour))
-        print("alpha: ",cur_work.alpha)
-        print("length: ",cur_work.length(tsp))
-        print("len tour: ",len(cur_work.tour))
+        # print("alpha: ",cur_work.alpha)
+        # print("length: ",cur_work.length(tsp))
+        # print("len tour: ",len(cur_work.tour))
         # local search algorithm
         local_search(tsp, work, cur_work)
         # update penalty
@@ -246,7 +246,7 @@ def guided_local_search(tsp, work, time_limit):
             print('{}\t{}*\t{}\t{:.2f}'.format(cnt,cur_work.obj,work.obj,cur_time-start_time))
         elif cur_time - disp_time > INTVL_TIME:
             print('{}\t{}\t{}\t{:.2f}'.format(cnt,cur_work.obj,work.obj,cur_time-start_time))
-            print("HOLA")
+            # print("HOLA")
             disp_time = time.time()
 
     # print tour length
