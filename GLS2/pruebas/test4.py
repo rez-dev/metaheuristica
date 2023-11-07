@@ -10,7 +10,7 @@ INTVL_TIME = 1.0  # interval time for display logs
 NUM_EPSILON = 0.001  # tolerance for numerical error
 # OR_OPT_SIZE = 3  # size of sub-path (or_opt_search)
 NB_LIST_SIZE = 5  # size of neighbor-list
-PENALTY_RATIO = 1  # penalty ratio for edges
+# PENALTY_RATIO = 1  # penalty ratio for edges
 
 class Tsp:
     # constructor ----------------------------------------------------
@@ -77,11 +77,14 @@ class Tsp:
 
 class Work:
     # constructor ----------------------------------------------------
-    def __init__(self,tsp):
+    def __init__(self,tsp,penalty_ratio):
         self.tour = [i for i in range(tsp.num_node)]  # tour of salesman
         self.pos = [i for i in range(tsp.num_node)]  # position of nodes in tour
+        self.call_count = 0
         self.obj = self.length(tsp)  # objective value
         self.penalty = {}  # penalty for edges
+        self.penalty_ratio = penalty_ratio  # penalty ratio for edges
+        
         # self.alpha = 0.0  # coefficient of penalized distance
     
     def copy(self,org):
@@ -89,10 +92,13 @@ class Work:
         self.pos = org.pos[:]
         self.obj = org.obj
         self.penalty = (org.penalty).copy()
+        self.call_count = org.call_count
         # self.alpha = org.alpha
 
     def length(self,tsp):
         length = 0.0
+        self.call_count += 1
+        # print("call_count: " + str(self.call_count))
         for i in range(len(self.tour)):
             length += tsp.dist((self.tour)[i],(self.tour)[(i+1) % len(self.tour)])
         return length
@@ -100,7 +106,7 @@ class Work:
     # calculate penalized distance -----------------------------------
     def pdist(self,tsp,v1,v2):
         if (v1,v2) in self.penalty:
-            return tsp.dist(v1,v2) + PENALTY_RATIO * (self.penalty)[v1,v2]
+            return tsp.dist(v1,v2) + self.penalty_ratio * (self.penalty)[v1,v2]
         else:
             return tsp.dist(v1,v2)
 
@@ -146,8 +152,10 @@ def nearest_neighbor(tsp, work):
     # print tour length
     print('length= {}'.format(work.obj))
 
-def guided_local_search(tsp, work, time_limit):
+def guided_local_search(tsp, work, time_limit, max_call_count,penalty_ratio):
     # update penalty
+    datos = []
+    contador = 0
     def update_penalty(tsp,work):
         max_val = 0.0
         arg_max_val = None
@@ -175,36 +183,38 @@ def guided_local_search(tsp, work, time_limit):
     print('\n[guided local search algorithm]')
 
     # initialize current working data
-    cur_work = Work(tsp)
+    cur_work = Work(tsp,penalty_ratio)
     cur_work.copy(work)
 
     # guided local search
     start_time = cur_time = disp_time = time.time()
     cnt = 0
-    while cur_time - start_time < time_limit:
+    while cur_time - start_time < time_limit and contador < max_call_count:
+     
         best_obj = work.obj
-        # set coefficient of penalized distance
-        # cur_work.alpha = PENALTY_RATIO * float(cur_work.length(tsp)) / float(len(cur_work.tour))
-        # print("alpha: ",cur_work.alpha)
-        # print("length: ",cur_work.length(tsp))
-        # print("len tour: ",len(cur_work.tour))
-        # local search algorithm
-        two_opt_search(tsp, work, cur_work)
-        # update penalty
+
+        temp = contador
+        contador = two_opt_search(tsp, work, cur_work,max_call_count, temp)
+
         update_penalty(tsp,cur_work)
         cnt += 1
         cur_time = time.time()
+
         if work.obj < best_obj:
             print('{}\t{}*\t{}\t{:.2f}'.format(cnt,cur_work.obj,work.obj,cur_time-start_time))
+            datos.append(cur_work.obj)
         elif cur_time - disp_time > INTVL_TIME:
             print('{}\t{}\t{}\t{:.2f}'.format(cnt,cur_work.obj,work.obj,cur_time-start_time))
+            datos.append(cur_work.obj)
             # print("HOLA")
             disp_time = time.time()
 
     # print tour length
     print('length= {}'.format(work.obj))
+    return datos
 
-def two_opt_search(tsp, work, cur_work):
+def two_opt_search(tsp, work, cur_work, max_call_count,contador):
+    nuevo_contador = contador
     # evaluate difference for 2-opt operation
     def eval_diff(tsp, work, u, v, flag):
         if flag == 'pdist':
@@ -228,11 +238,16 @@ def two_opt_search(tsp, work, cur_work):
         work.set_pos()
         # update objective value
         work.obj = work.length(tsp)
+        # print("call_count: " + str(work.call_count))
 
     # 2-opt neighborhood search
     improved = False
     restart = True
     while restart:
+        if nuevo_contador >= max_call_count:
+            print("MAXIMO ALCANZADO1 " + str(nuevo_contador))
+            restart = False
+            break
         restart = False
         nbhd = ((u,v)
                 for u in work.tour
@@ -244,15 +259,24 @@ def two_opt_search(tsp, work, cur_work):
                 # update incumbent tour
                 work.copy(cur_work)
                 change_tour(tsp, work, u, v)
+                nuevo_contador += 1
+            if nuevo_contador >= max_call_count:
+                print("MAXIMO ALCANZADO1 " + str(nuevo_contador))
+                restart = False
+                break
             # evaluate difference in penalized cost
             delta = eval_diff(tsp, cur_work, u, v, 'pdist')
             if delta < -NUM_EPSILON:
                 # change current tour
                 change_tour(tsp, cur_work, u, v)
+                nuevo_contador += 1
                 improved = True
                 restart = True
+                if nuevo_contador >= max_call_count:
+                    print("MAXIMO ALCANZADO1 " + str(nuevo_contador))
+                    restart = False
                 break
-    return improved
+    return nuevo_contador
 
 # --------------------------------------------------------------------
 #   main
@@ -265,14 +289,15 @@ def main(argv=sys.argv):
     tsp = Tsp()
     tsp.read("qa194.tsp")
     tsp.write()
-
+    penalty_ratio = 1
     # construct neighbor-list
     tsp.gen_neighbor()
 
+    max_call_count = 5000
     # solve TSP
-    work = Work(tsp)
+    work = Work(tsp,penalty_ratio)
     nearest_neighbor(tsp, work)  # nearest neighbor algorithm
-    guided_local_search(tsp, work, 30)  # guided local search
+    datos = guided_local_search(tsp, work, 200, max_call_count,penalty_ratio)  # guided local search
     work.write(tsp)
 
     # set completion time
@@ -280,6 +305,9 @@ def main(argv=sys.argv):
 
     # display computation time
     print('\nTotal time:\t%.3f sec' % (end_time - start_time))
+    print(datos)
+    plt.plot(datos)
+    plt.show()
 
 
 # main ---------------------------------------------------------------

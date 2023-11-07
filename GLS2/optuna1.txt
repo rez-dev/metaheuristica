@@ -1,0 +1,12 @@
+[I 2023-11-05 01:47:09,806] Trial 99 finished with value: 9449.0 and parameters: {'penalty_ratio': 7.63929480233145}. Best is trial 75 with value: 9352.0.
+Mejor valor de penalty_ratio encontrado: 8.108455507870257
+
+
+[I 2023-11-05 20:20:03,697] Trial 49 finished with value: 9593.0 and parameters: {'penalty_ratio': 6.1454455774229615}. Best is trial 35 with value: 9353.0.
+Mejor valor de penalty_ratio encontrado: 7.594320955969139
+PS C:\Users\roesc\Desktop\metaheuristica\GLS2>
+
+### 21 ejecuciones qa194
+El máximo valor es 9690.0 y se encuentra en la posición 12
+El mínimo valor es 9360.0 y se encuentra en la posición 6
+[9532.0, 9539.0, 9412.0, 9415.0, 9572.0, 9444.0, 9360.0, 9465.0, 9426.0, 9523.0, 9451.0, 9413.0, 9690.0, 9362.0, 9433.0, 9427.0, 9488.0, 9519.0, 9564.0, 9547.0, 9388.0]
