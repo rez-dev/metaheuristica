@@ -1,0 +1,38 @@
+guided_local_search(tsp, mall_call_count, penalty_ratio)
+    solucion_inicial = generar_solucion_inicial()
+    mejor_solucion = solucion_inicial
+    MIENTRAS contador < mall_call_count HACER
+        mejor_vecino = 2_opt(tsp, solucion, solucion, max_call_count, contador)
+        penalizar(mejor_vecino)
+        SI mejor_vecino.costo < mejor_solucion.costo
+            mejor_solucion = mejor_vecino
+    FIN MIENTRAS
+    RETORNAR mejor_solucion
+
+dos_opt(tsp, solucion, solucion, max_call_count, contador)
+    mejora = false
+    reiniciar = true
+    while reiniciar:
+        if nuevo_contador >= max_call_count:
+            reiniciar = False
+            break
+        reiniciar = False
+        vecindarios = (u, v) todos los vecinos v de la ciudad u
+        por cada ciudad y vecindario en vecindarios
+            evaluar_mejora con swap
+            
+            si hay mejora
+                solucion = solucion_actual con swap
+                
+            
+            if nuevo_contador >= max_call_count:
+                reiniciar = False
+                break
+            
+            si hay en mejora con distancias penalizadas
+                hacer swap en solucion_actual
+                mejora = True
+                reiniciar = True
+                if nuevo_contador >= max_call_count:
+                    reiniciar = False
+                    break

@@ -1,0 +1,3 @@
+[I 2023-11-08 13:51:52,889] Trial 30 finished with value: 9495.0 and parameters: {'grado_penalizacion': 7.309945499267896, 'cantidad_vecinos': 7}. Best is trial 6 with value: 9352.0.
+Mejor valor de grado_penalizacion encontrado: 5.265818846996781
+Mejor valor de cantidad_vecinos encontrado: 5

@@ -15,7 +15,6 @@ import optuna
 # Variables globales
 INTVL_TIME = 1.0  # intervalo de tiempo con el que se muestra el progreso
 NUM_EPSILON = 0.001  # tolerancia de error para comparación de números flotantes
-# NB_LIST_SIZE = 5  # tamaño de lista de vecinos
 
 class Tsp:
     # constructor ----------------------------------------------------
@@ -168,10 +167,13 @@ def actualizar_penalizacion(tsp,solucion):
     else:
         (solucion.penalizaciones)[next_v,v] = 1.0 # Se hace lo mismo para la arista inversa
 
-def guided_local_search(tsp, solucion, max_call_count,grado_penalizacion):
+def guided_local_search(tsp, max_call_count,grado_penalizacion):
     print('\n[algoritmo guided local search]')
     datos_convergencia = []
     contador = 0
+
+    # inicializar clase de solucion
+    solucion = Solucion(tsp,grado_penalizacion)
     
     # inicializar ruta inicial random
     ruta_random(tsp, solucion)
@@ -210,7 +212,7 @@ def guided_local_search(tsp, solucion, max_call_count,grado_penalizacion):
 
     # mostrar ruta largo
     print('largo final= {}'.format(solucion.recorrido_total))
-    return datos_convergencia
+    return datos_convergencia, solucion
 
 # evaluar mejora con cambio de ruta
 def evaluar_mejora(tsp, solucion, u, v, flag):
@@ -259,11 +261,11 @@ def dos_opt(tsp, solucion, solucion_actual, max_call_count,contador):
             if solucion_actual.recorrido_total + delta < solucion.recorrido_total - NUM_EPSILON: # Si se presenta mejoras en el ruta se actualiza el ruta (solucion = solucion_actual)
                 # actualizar ruta con el cambio de ruta
                 solucion.copiar(solucion_actual) 
-                antes = solucion.recorrido_total
+                # antes = solucion.recorrido_total
                 cambiar_ruta(tsp, solucion, u, v) #Se cambia el solucion original
-                despues = solucion.recorrido_total
-                if antes < despues:
-                    print("AUMENTÓ EL LARGO1 " + str(antes) + " " + str(despues))
+                # despues = solucion.recorrido_total
+                # if antes < despues:
+                #     print("AUMENTÓ EL LARGO1 " + str(antes) + " " + str(despues))
                 nuevo_contador += 1
             if nuevo_contador >= max_call_count:
                 # print("MAXIMO ALCANZADO2 " + str(nuevo_contador))
@@ -274,9 +276,9 @@ def dos_opt(tsp, solucion, solucion_actual, max_call_count,contador):
             if delta < -NUM_EPSILON:  # Si se presenta mejoras significativas en el ruta se actualiza el current ruta
                 # change current ruta
                 # print("solucion actual antes: " + str(solucion_actual.recorrido_total))
-                antes = solucion_actual.recorrido_total
+                # antes = solucion_actual.recorrido_total
                 cambiar_ruta(tsp, solucion_actual, u, v) #Se cambia el solucion temporal
-                despues = solucion_actual.recorrido_total
+                # despues = solucion_actual.recorrido_total
                 # if antes < despues:
                 #     print("AUMENTÓ EL LARGO2 " + str(antes) + " " + str(despues))
                 # print("solucion actual despues: " + str(solucion_actual.recorrido_total))
@@ -296,14 +298,12 @@ def objective(trial):
     # Define el rango de búsqueda para cantidad_vecinos
     cantidad_vecinos = trial.suggest_int('cantidad_vecinos', 4, 10)
 
-    # Realiza la optimización utilizando el grado_penalizacion
+    # Realiza la optimización utilizando el grado_penalizacion y cantidad_vecinos
     tsp = Tsp()
     tsp.leer("./datasets/qa194.tsp")
     tsp.gen_vecindario(cantidad_vecinos)
 
-    solucion = Solucion(tsp, grado_penalizacion)
-    ruta_random(tsp, solucion)
-    datos_convergencia = guided_local_search(tsp, solucion, 5000, grado_penalizacion)
+    datos_convergencia, solucion = guided_local_search(tsp, 5000, grado_penalizacion)
 
     # Define la función objetivo, por ejemplo, minimizar la longitud del ruta
     return solucion.recorrido_total
@@ -333,9 +333,9 @@ def main(argv=sys.argv):
     # tsp.gen_vecindario(cantidad_vecinos)
 
     # # resolver TSP
-    # solucion = Solucion(tsp,grado_penalizacion)
-    # datos_convergencia = guided_local_search(tsp, solucion, max_call_count,grado_penalizacion)
-    # solucion.escribir(tsp)
+    # # solucion = Solucion(tsp,grado_penalizacion)
+    # datos_convergencia, solucion = guided_local_search(tsp, max_call_count,grado_penalizacion)
+    # # solucion.escribir(tsp)
 
     # # set completion time
     # end_time = time.time()
@@ -367,13 +367,13 @@ def main(argv=sys.argv):
     # # xd = [1,2,3,4,5,6]
     # mediana = np.median(np.sort(largos))
     # print("Mediana: " + str(mediana))
-
     # return datos_convergencia, solucion.recorrido_total
+
     # EJECUCION DE OPTUNA 
     # Crea un estudio Optuna
     study = optuna.create_study(direction='minimize')
     # Ejecuta la optimización
-    study.optimize(objective, n_trials=2)
+    study.optimize(objective, n_trials=31)
     # Obtiene el mejor valor de grado_penalizacion
     best_grado_penalizacion = study.best_params['grado_penalizacion']
     best_cantidad_vecinos = study.best_params['cantidad_vecinos']
