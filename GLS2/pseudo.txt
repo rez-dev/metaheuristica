@@ -36,3 +36,28 @@ dos_opt(tsp, solucion, solucion, max_call_count, contador)
                 if nuevo_contador >= max_call_count:
                     reiniciar = False
                     break
+
+Procedimiento dos_opt(tsp, solucion, solucion_actual):
+    reiniciar = Verdadero
+
+    Mientras reiniciar:
+        reiniciar = Falso
+
+        # Generador bajo demanda de vecinos (tuplas de nodos)
+        vecindario = GenerarVecindario(solucion.ruta, tsp.vecinos)
+
+        Para cada (u, v) en vecindario:
+            # Evaluar mejora con costo normal
+            delta = EvaluarMejora(tsp, solucion_actual, u, v, 'distancia_euc')
+
+            Si solucion_actual.recorrido_total + delta < solucion.recorrido_total - NUM_EPSILON:)
+                CambiarRuta(tsp, solucion, u, v)
+
+            # Evaluar mejora con costo penalizado
+            delta = EvaluarMejora(tsp, solucion_actual, u, v, 'distancia_penalizada')
+
+            Si delta < -NUM_EPSILON:
+                CambiarRuta(tsp, solucion_actual, u, v)
+                reiniciar = Verdadero
+
+    Devolver nuevo_contador

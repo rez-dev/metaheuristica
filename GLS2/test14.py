@@ -296,14 +296,14 @@ def objective(trial):
 # --------------------------------------------------------------------
 #   main
 # --------------------------------------------------------------------
-def main(nombre_dataset):
+def main():
     # parametros
     grado_penalizacion = 5.265818846996781
     max_call_count = 10000
     cantidad_vecinos = 5
 
     # set random seed
-    # random.seed(4)
+    random.seed(3)
 
     # set starting time
     tiempo_inicial = time.time()
@@ -311,7 +311,8 @@ def main(nombre_dataset):
     # leer instancia TSP
     tsp = Tsp()
     # tsp.leer("./datasets/dj38.tsp")
-    tsp.leer(nombre_dataset)
+    tsp.leer("./datasets/qa194.tsp")
+    # tsp.leer(nombre_entrada)
     tsp.escribir()
 
     # generar lista de vecindarios
@@ -326,15 +327,15 @@ def main(nombre_dataset):
     end_time = time.time()
     # display computation time
     print('\nTotal time:\t%.3f sec' % (end_time - tiempo_inicial))
-    return datos_convergencia, solucion.recorrido_total
+    # return datos_convergencia, solucion.recorrido_total
 
-    # # Print convergence graph
-    # # print(datos_convergencia)
-    # plt.plot(datos_convergencia)
-    # plt.xlabel("Iteraciones")
-    # plt.ylabel("Distancia total")
-    # plt.title("Convergencia")
-    # plt.show()
+    # Print convergence graph
+    # print(datos_convergencia)
+    plt.plot(datos_convergencia)
+    plt.xlabel("Iteraciones")
+    plt.ylabel("Distancia total")
+    plt.title("Convergencia")
+    plt.show()
 
     # # DATASETS OPTIMUM VALUES
     # qa194 = 9352
@@ -368,7 +369,7 @@ def main(nombre_dataset):
 
 def escribir_en_archivo(arreglo, nombre_entrada):
     try:
-        with open("salida.txt", 'a') as archivo:
+        with open("new_salida.txt", 'a') as archivo:
             archivo.write("### " + nombre_entrada + " ###" + '\n')
             archivo.write(str(arreglo) + '\n\n')
                 
@@ -378,37 +379,37 @@ def escribir_en_archivo(arreglo, nombre_entrada):
 
 # main ---------------------------------------------------------------
 if __name__ == "__main__":
-    # main()
+    main()
 
     # Ciclo de ejecuciones
-    num_executions = 21  # Número de ejecuciones
-    results = []  # Almacenar resultados
-    lengths = []
-    # datasets = ["./datasets/uy734.tsp", "./datasets/zi929.tsp", "./datasets/lu980.tsp"]
-    # datasets = ["./datasets/uy734.tsp"]
-    datasets = ["./datasets/wi29.tsp", "./datasets/dj38.tsp"]
+    # num_executions = 21  # Número de ejecuciones
+    # results = []  # Almacenar resultados
+    # lengths = []
+    # # datasets = ["./datasets/uy734.tsp", "./datasets/zi929.tsp", "./datasets/lu980.tsp"]
+    # # datasets = ["./datasets/uy734.tsp"]
+    # datasets = ["./datasets/qa194.tsp"]
 
-    for dataset in datasets:
-        for i in range(num_executions):
-            # Establecer una semilla aleatoria diferente en cada ejecución
-            random.seed(i)
+    # for dataset in datasets:
+    #     for i in range(num_executions):
+    #         # Establecer una semilla aleatoria diferente en cada ejecución
+    #         random.seed(i)
 
-            # Realizar la ejecución
-            print(f"\nEjecución {i + 1} con semilla {i}:")
-            main_result,largo = main(dataset)
-            results.append(main_result)
-            lengths.append(largo)
-            # plt.plot(results[i], label=f"Ejecución {i + 1}")
+    #         # Realizar la ejecución
+    #         print(f"\nEjecución {i + 1} con semilla {i}:")
+    #         main_result,largo = main(dataset)
+    #         results.append(main_result)
+    #         lengths.append(largo)
+    #         # plt.plot(results[i], label=f"Ejecución {i + 1}")
 
-        maximo_valor, posicion = max((numero, indice) for indice, numero in enumerate(lengths))
-        print(f"El máximo valor es {maximo_valor} y se encuentra en la posición {posicion}")
-        minimo_valor, posicion = min((numero, indice) for indice, numero in enumerate(lengths))
-        print(f"El mínimo valor es {minimo_valor} y se encuentra en la posición {posicion}")
-        print(lengths)
-        escribir_en_archivo(lengths, dataset)
+    #     maximo_valor, posicion = max((numero, indice) for indice, numero in enumerate(lengths))
+    #     print(f"El máximo valor es {maximo_valor} y se encuentra en la posición {posicion}")
+    #     minimo_valor, posicion = min((numero, indice) for indice, numero in enumerate(lengths))
+    #     print(f"El mínimo valor es {minimo_valor} y se encuentra en la posición {posicion}")
+    #     print(lengths)
+    #     escribir_en_archivo(lengths, dataset)
     # Imprimir los resultados de todas las ejecuciones
     # for i, result in enumerate(results):
-        # print(f"Resultado de la ejecución {i + 1}: {result}")
+    #     print(f"Resultado de la ejecución {i + 1}: {result}")
     # plt.xlabel("Iteraciones")
     # plt.ylabel("Distancia total")
     # plt.title("Convergencia de todas las ejecuciones")
