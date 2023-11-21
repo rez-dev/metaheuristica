@@ -23,10 +23,10 @@ def swap_distance(arr1, arr2):
     return distance
 
 # Ejemplo de uso:
-# array1 = [1,2,3,4,5,6]
-# array2 = [1,2,4,5,6,3]
-array1 = [1,14,13,12,7,6,15,5,11,9,10,16,3,2,4,8]
-array2 = [1,14,13,12,15,5,7,6,11,9,10,16,3,2,4,8]
+array1 = [1,2,3,4,5,6]
+array2 = [1,2,4,5,6,3]
+# array1 = [1,14,13,12,7,6,15,5,11,9,10,16,3,2,4,8]
+# array2 = [1,14,13,12,15,5,7,6,11,9,10,16,3,2,4,8]
 
-resultado = swap_distance(array2, array2)
+resultado = swap_distance(array1, array2)
 print("La distancia de intercambio entre los arreglos es:", resultado)

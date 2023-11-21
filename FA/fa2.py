@@ -101,21 +101,6 @@ class Firefly:
         aristas = [(self.ruta[i], self.ruta[i + 1]) for i in range(len(self.ruta) - 1)]
         return aristas
 
-    # distancia ponderada    
-    # def distancia_luciernaga(self, luciernaga_j):
-    #     aristas_ruta1 = set(self.generar_aristas())
-    #     aristas_ruta2 = set(luciernaga_j.generar_aristas())
-    #     diferencias = aristas_ruta1.difference(aristas_ruta2)
-    #     cantidad_aristas_distintas = len(diferencias)
-    #     # reverse each edge
-    #     aristas_inversas = set(map(lambda x: (x[1], x[0]), diferencias))
-    #     for arista in aristas_inversas:
-    #         if arista in aristas_ruta2:
-    #             cantidad_aristas_distintas -= 1
-    #     distancia = (cantidad_aristas_distintas/len(self.ruta))*10
-    #     distancia = round(distancia)
-    #     return cantidad_aristas_distintas
-
     # distancia entre luciernagas con hamming
     def distancia_luciernaga(self, luciernaga_j):
         distancia = 0
@@ -123,25 +108,6 @@ class Firefly:
             if self.ruta[i] != luciernaga_j.ruta[i]:
                 distancia += 1
         return distancia
-
-    # distancia paper 2
-    # def distancia_luciernaga(self, luciernaga_j):
-    #     edges_self = set(self.ruta)
-    #     edges_luciernaga_j = set(luciernaga_j.ruta)
-    #     unique_edges_self = edges_self.difference(edges_luciernaga_j)
-    #     count = len(unique_edges_self)
-    #     # reverse each edge
-    #     reverse = set(map(lambda x: (x[1], x[0]), unique_edges_self))
-    #     for edge in reverse:
-    #         if edge in edges_luciernaga_j:
-    #             count -= 1
-    #     count = count / len(self.ruta) * 10
-    #     return round(count)
-
-    # def generate_edges_from_route(route):
-    #     edges = [(route[i], route[i + 1]) for i in range(len(route) - 1)]
-    #     return edges
-    
 
     def calcular_atraccion(self, luciernaga_j, coef_absorcion):
         brillo_luciernaga_j = luciernaga_j.intensidad_luz
@@ -177,54 +143,6 @@ def generar_poblacion_inicial(tsp, cant_luciernagas):
         poblacion[i].intensidad_luz = 1.0 / poblacion[i].recorrido_total
     return poblacion
 
-def nearest_neighbor(tsp):
-    num_nodes = tsp.num_nodos
-    tour = list(range(num_nodes))  # Crear un tour inicial [0, 1, 2, ..., num_nodes - 1]
-    nodo_inicial = random.randint(0, num_nodes - 1)  # Elegir un nodo inicial aleatorio
-    route = [nodo_inicial]  # Inicializar la ruta con el nodo inicial aleatorio
-
-    # nearest neighbor
-    for i in range(1, num_nodes):
-        # Encontrar el nodo no visitado más cercano
-        current_node = route[-1]
-        min_dist = float('inf')
-        arg_min_dist = None
-        for j in range(num_nodes):
-            if j not in route:
-                dist = tsp.distancia_euc(current_node, j)
-                if dist < min_dist:
-                    min_dist = dist
-                    arg_min_dist = j
-        # Agregar el nodo no visitado más cercano a la ruta
-        route.append(arg_min_dist)
-
-    return route
-
-
-def generar_luciernagas_nn(tsp, n):
-    luciernagas = []
-    for _ in range(n):
-        ruta = nearest_neighbor(tsp)
-        luciernaga = Firefly()
-        luciernaga.ruta = ruta
-        luciernaga.recorrido_total = luciernaga.costo_recorrido(tsp)
-        luciernaga.intensidad_luz = 1.0 / luciernaga.recorrido_total
-        luciernagas.append(luciernaga)
-    return luciernagas
-
-# Movimiento cuando hay luciernaga mas atractiva
-# def mutacion_inversa_movimiento(tsp,luciernaga, distancia):
-#     nueva_ruta = luciernaga.ruta[:]
-#     inicio = random.randint(0, len(nueva_ruta) - distancia)
-#     fin = inicio + distancia
-#     seccion_reversa = nueva_ruta[inicio:fin][::-1]
-#     nueva_ruta = nueva_ruta[:inicio] + seccion_reversa + nueva_ruta[fin:]
-#     nueva_luciernaga = Firefly()
-#     nueva_luciernaga.ruta = nueva_ruta[:]
-#     nueva_luciernaga.recorrido_total = nueva_luciernaga.costo_recorrido(tsp)
-#     nueva_luciernaga.intensidad_luz = 1.0 / nueva_luciernaga.recorrido_total
-#     # print("Nueva luciernaga mov: " + str(nueva_luciernaga.ruta) + " - " + str(nueva_luciernaga.recorrido_total) + " - " + str(nueva_luciernaga.intensidad_luz))
-#     return nueva_luciernaga
 def mutacion_inversa_movimiento(tsp, luciernaga, distancia):
     nueva_ruta = luciernaga.ruta[:]
     inicio = random.randint(0, len(nueva_ruta) - distancia)
@@ -316,13 +234,13 @@ def DFA(tsp, cant_luciernagas, max_call_objetive_function, coef_absorcion, taman
 
 def objective(trial):
     # Define los rangos para los hiperparámetros que quieres optimizar
-    cant_luciernagas = trial.suggest_int('cant_luciernagas', 2, 50)
+    cant_luciernagas = trial.suggest_int('cant_luciernagas', 10, 150)
     coef_absorcion = trial.suggest_float('coef_absorcion', 0.00001, 0.15)
     tamano_seccion_m = trial.suggest_int('tamano_seccion_m', 2, 11)
 
     # leer tsp
     tsp = Tsp()
-    tsp.leer("./datasets/wi29.tsp")
+    tsp.leer("./datasets/qa194.tsp")
     tsp.escribir()
     
     # Crear una instancia de DFA con los parámetros optimizados
@@ -345,21 +263,21 @@ def correr_optuna():
 
 def main():
     # set random seed
-    # random.seed(1)
+    random.seed(1)
 
     # set starting time
     tiempo_inicial = time.time()
 
     # leer instancia TSP
     tsp = Tsp()
-    tsp.leer("./datasets/wi29.tsp")
+    tsp.leer("./datasets/qa194.tsp")
     tsp.escribir()
 
     # Variables
-    cant_luciernagas = 25
+    cant_luciernagas = 80
     max_call_objetive_function = 100000
-    coef_absorcion = 0.02889025551858896
-    tamano_seccion_m = 7
+    coef_absorcion = 0.0001
+    tamano_seccion_m = 6
 
     # Llamada DFA
     poblacion = DFA(tsp, cant_luciernagas, max_call_objetive_function, coef_absorcion, tamano_seccion_m)
