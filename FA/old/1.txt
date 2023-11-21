@@ -1,0 +1,37 @@
+
+Firefly i 6 7 8 4 2 1 5 15 12 3 16 11 9 10 13 14
+Firefly j 6 7 12 13 14 1 8 4 2 3 16 11 9 10 15 5
+
+Figure 13.5 Two fireflies with seven different edges.
+
+
+Firefly i [6 7 8 4 2 1 5 15 12 3 16 11 9 10 13 14]
+                   x           y
+Figure 13.6 Firefly i with the segments of each node in the selected edge.
+
+
+Firefly i [6 7 8 4 2 1 5 15 12 3 16 11 9 10 13 14]
+                   x           y
+
+Firefly i1 [6 7 1 5 15 12 8 4 2 3 16 11 9 10 13 14]
+
+Firefly i2 [6 7 1 5 15 12 10 9 11 16 3 2 4 8 13 14]
+
+Firefly i3 [6 7 10 9 11 16 3 2 4 8 1 5 15 12 13 14]
+
+Firefly i4 [6 7 8 4 2 3 16 11 9 10 1 5 15 12 13 14]
+
+Figure 13.7 Merging process of two segments in firefly.
+
+
+Firefly i 6 7 8 4 2 1 5 15 12 3 16 11 9 10 13 14
+Firefly j 6 7 12 13 14 1 8 4 2 3 16 11 9 10 15 5
+
+Firefly i1 [6 7 1 5 15 12 8 4 2 3 16 11 9 10 13 14]
+
+Firefly i2 [6 7 1 5 15 12 10 9 11 16 3 2 4 8 13 14]
+
+Firefly i3 [6 7 10 9 11 16 3 2 4 8 1 5 15 12 13 14]
+
+Firefly i4 [6 7 8 4 2 3 16 11 9 10 1 5 15 12 13 14]
+

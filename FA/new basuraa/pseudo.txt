@@ -1,0 +1,92 @@
+Begin
+    List<Firef1y> temp = new List<Firefly>
+    //initialize population of firefly
+    Firefly[] x new Firefly[p]
+    for i = I to p do
+        x[i] = Generate_Initial_Solution()
+    endfor
+    repeat
+        for i = I to p do
+            Firefly f = Get_Most_Attractive_Firefly(x[i])
+            if (f != null) then
+                for j = I to m do
+                    Firefly fnew — Move_Firefly(x[i])
+                    temp.Add(fnew)
+                endfor
+            else
+                for j —1 tomdo
+                    Firefly fnew Move_Random(x[il)
+                    temp.Add(fnew)
+                endfor
+            endif
+        endfor
+        //select p brightest fireflies from temp
+        x = Get_Brightest_Fireflies(temp)
+        temp.Clear()
+    until stop condition true
+    //output best firefly
+    Output(x.min)
+end
+
+
+Begin
+    List<Firefly> temp new List<Firefly>
+    //initialize population of firefly
+    Firefly[] x = new Firefly[p]
+    fori=l to p do
+        x[i] = Generate_InitiaI_SoIution()   
+    endfor
+    repeat
+        for i | to p do
+            Firefly f= Get_Most_Attractive_Firefly(x[i])
+            if (f null) then
+                Firefly[] newSolutions new Firefly[4]
+                newSoIutions = Edge-based Movement(x[i])
+                Firefly fnew = newSolution[Random( I ,4)]
+                temp.Add(fnew)
+            else
+                forj = I to m do
+                    Firefly fnew — Move_Random(x[i])
+                    temp.Add(fnew)
+                endfor
+        endif
+        endfor
+        //select p brightest fireflies from temp
+        x = Get Brightest_Fireflies(temp)
+        tempClear()
+    until stop condition true
+    //output best firefly
+    Output(x.min)
+end
+
+
+FA(population size p, light_absorption gama, updating_index m)
+    Begin
+        List<Firef1y> temp = new List<Firefly>
+        //initialize population of firefly
+        Firefly[] x new Firefly[p]
+        for i = I to p do
+            x[i] = Generate_Initial_Solution()
+        endfor
+        repeat
+            for i = I to p do
+                Firefly f = Get_Most_Attractive_Firefly(x[i])
+                if (f != null) then
+                    for j = I to m do
+                        Firefly fnew — Move_Firefly(x[i])
+                        temp.Add(fnew)
+                    endfor
+                else
+                    for j —1 tomdo
+                        Firefly fnew Move_Random(x[il)
+                        temp.Add(fnew)
+                    endfor
+                endif
+            endfor
+            //select p brightest fireflies from temp
+            x = Get_Brightest_Fireflies(temp)
+            temp.Clear()
+        until stop condition true
+        //output best firefly
+        Output(x.min)
+    end

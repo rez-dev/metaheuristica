@@ -1,0 +1,10 @@
+Best is trial 83 with value: 35804.0.
+100 trials wi29
+Mejores parámetros: {'cant_luciernagas': 50, 'coef_absorcion': 0.0902612739649666, 'indice_actualizacion': 1, 'tamano_seccion': 6}
+
+[I 2023-11-19 19:14:57,698] Trial 99 finished with value: 30274.0 and parameters: {'cant_luciernagas': 178, 'coef_absorcion': 0.07091064960638117, 'indice_actualizacion': 3, 'tamano_seccion': 8}. Best is trial 25 with value: 30007.0.
+Mejores parámetros: {'cant_luciernagas': 140, 'coef_absorcion': 0.0888790460875098, 'indice_actualizacion': 2, 'tamano_seccion': 8}
+
+wi29 25 trials
+[I 2023-11-19 23:48:55,556] Trial 24 finished with value: 46305.0 and parameters: {'cant_luciernagas': 72, 'coef_absorcion': 0.1371110166002146, 'indice_actualizacion': 4, 'tamano_seccion': 6}. Best is trial 9 with value: 40831.0.
+Mejores parámetros: {'cant_luciernagas': 86, 'coef_absorcion': 0.12280569983918918, 'indice_actualizacion': 4, 'tamano_seccion': 8}
