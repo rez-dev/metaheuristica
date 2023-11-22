@@ -138,3 +138,9 @@ Indice:  0
 Valor:  [13106.0, 13119.0]
 Indice:  16
 Valor:  [14092.0, 14098.0]
+
+buena seed con 5 luciernagas
+13249.0
+
+mala seed 5 luciernagas
+13694.0
