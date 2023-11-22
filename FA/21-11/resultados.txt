@@ -1,0 +1,44 @@
+[I 2023-11-21 01:31:17,082] Trial 99 finished with value: 44103.0 and parameters: {'cant_luciernagas': 33, 'coef_absorcion': 0.13734897438760726, 'tamano_seccion_m': 8}. Best is trial 83 with value: 38141.0.
+Mejores parámetros: {'cant_luciernagas': 38, 'coef_absorcion': 0.1487852288811878, 'tamano_seccion_m': 7}
+
+DJ38
+[I 2023-11-21 01:36:40,380] Trial 99 finished with value: 15105.0 and parameters: {'cant_luciernagas': 34, 'coef_absorcion': 0.106806048507873, 'tamano_seccion_m': 5}. Best is trial 51 with value: 12262.0.
+Mejores parámetros: {'cant_luciernagas': 26, 'coef_absorcion': 0.08205281863176224, 'tamano_seccion_m': 11}
+
+
+qa194 hamming
+[I 2023-11-21 01:51:29,815] Trial 99 finished with value: 11276.0 and parameters: {'cant_luciernagas': 60, 'coef_absorcion': 0.11702093100464149, 'tamano_seccion_m': 10}. Best is trial 65 with value: 11124.0.
+Mejores parámetros: {'cant_luciernagas': 35, 'coef_absorcion': 0.11912433746048678, 'tamano_seccion_m': 8}
+
+qa194 distancia ponderada sin guardar el con mov random
+[I 2023-11-21 02:08:52,541] Trial 99 finished with value: 11726.0 and parameters: {'cant_luciernagas': 92, 'coef_absorcion': 0.0007906566078037442, 'tamano_seccion_m': 8}. Best is trial 94 with value: 11078.0.
+Mejores parámetros: {'cant_luciernagas': 79, 'coef_absorcion': 0.0003754672453880141, 'tamano_seccion_m': 8}
+
+[I 2023-11-21 02:26:13,158] Trial 99 finished with value: 11543.0 and parameters: {'cant_luciernagas': 38, 'coef_absorcion': 0.0029785531235728734, 'tamano_seccion_m': 4}. Best is trial 82 with value: 10994.0.
+Mejores parámetros: {'cant_luciernagas': 50, 'coef_absorcion': 2.6357166448222683e-05, 'tamano_seccion_m': 3}
+
+
+qa194 con distancia paper 2 
+[I 2023-11-21 02:33:39,987] Trial 99 finished with value: 11423.0 and parameters: {'cant_luciernagas': 44, 'coef_absorcion': 0.0033764923577763234, 'tamano_seccion_m': 8}. Best is trial 63 with value: 11087.0.
+Mejores parámetros: {'cant_luciernagas': 41, 'coef_absorcion': 0.0037195771582089737, 'tamano_seccion_m': 8}
+
+
+
+nuevo 
+[I 2023-11-21 03:13:38,464] Trial 99 finished with value: 41875.0 and parameters: {'cant_luciernagas': 18, 'coef_absorcion': 0.02035766188391438, 'tamano_seccion_m': 8}. Best is trial 43 with value: 37083.0.
+Mejores parámetros: {'cant_luciernagas': 25, 'coef_absorcion': 0.02889025551858896, 'tamano_seccion_m': 7}
+
+
+
+qa194 fa2.py
+[I 2023-11-21 05:10:21,550] Trial 99 finished with value: 70840.0 and parameters: {'cant_luciernagas': 28, 'coef_absorcion': 0.10707157050249153, 'tamano_seccion_m': 4}. Best is trial 84 with value: 54688.0.
+Mejores parámetros: {'cant_luciernagas': 10, 'coef_absorcion': 0.08766061302888001, 'tamano_seccion_m': 6}
+
+
+qa194 test.py
+[I 2023-11-21 05:45:50,882] Trial 99 finished with value: 60905.0 and parameters: {'cant_luciernagas': 26, 'coef_absorcion': 0.14619898435401465, 'tamano_seccion_m': 8}. Best is trial 62 with value: 44622.0.
+Mejores parámetros: {'cant_luciernagas': 10, 'coef_absorcion': 0.11753121755073376, 'tamano_seccion_m': 8}
+
+qa194 test2.py
+[I 2023-11-21 05:54:29,610] Trial 99 finished with value: 50860.0 and parameters: {'cant_luciernagas': 2, 'coef_absorcion': 0.14233165689481625, 'tamano_seccion_m': 9}. Best is trial 91 with value: 39636.0.
+Mejores parámetros: {'cant_luciernagas': 2, 'coef_absorcion': 0.15408549015964856, 'tamano_seccion_m': 10}

@@ -1,0 +1,2 @@
+[I 2023-11-21 20:00:38,853] Trial 99 finished with value: 79016.0 and parameters: {'cant_luciernagas': 4, 'coef_absorcion': 0.11684926808184988, 'tamano_seccion_m': 10}. Best is trial 83 with value: 68529.0.
+Mejores parámetros: {'cant_luciernagas': 2, 'coef_absorcion': 0.1324801200969674, 'tamano_seccion_m': 10}

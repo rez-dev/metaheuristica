@@ -1,0 +1,25 @@
+FA(population size p, light_absorption gama, updating_index m)
+    Begin
+        List<Firef1y> temp = new List<Firefly>
+        Firefly[] x = new Firefly[p]
+        for i = I to p do
+            x[i] = Generate_Initial_Solution()
+        endfor
+        repeat
+            for i = I to p do
+                Firefly f = Get_Most_Attractive_Firefly(x[i])
+                if (f != null) then
+                    for j = I to m do
+                        Firefly fnew = Move_Firefly(x[i])
+                        temp.Add(fnew)
+                    endfor
+                else
+                    Firefly fnew = 2_opt_first_improvement(x[i])
+                    temp.Add(fnew)
+                endif
+            endfor
+            x = Get_Brightest_Fireflies(temp)
+            temp.Clear()
+        until stop condition true
+        Output(x.min)
+    end
