@@ -278,7 +278,8 @@ def DFA(tsp, cant_luciernagas, max_call_objetive_function, coef_absorcion, cant_
         historial_completo.append(temporal)
         temporal = []
 
-        print("Mejor recorrido: " + str(poblacion[0].ruta) + " - " + str(poblacion[0].recorrido_total) + " - " + str(poblacion[0].intensidad_luz))
+        # print("Mejor recorrido: " + str(poblacion[0].ruta) + " - " + str(poblacion[0].recorrido_total) + " - " + str(poblacion[0].intensidad_luz))
+        print("mejor recorrido: " + str(poblacion[0].recorrido_total))
         # print("mejor recorrido total: " + str(poblacion[0].recorrido_total))
         print("contador_llamados: " + str(contador_llamados))
     

@@ -229,7 +229,7 @@ def DFA(tsp, cant_luciernagas, max_call_objetive_function, coef_absorcion, cant_
     temporal = []
 
     # Generar luciernagas iniciales
-    poblacion = generar_poblacion_inicial(tsp, cant_luciernagas)
+    poblacion = generar_luciernagas_nn(tsp, cant_luciernagas)
     contador_llamados += cant_luciernagas
 
     # Iterar hasta que se cumpla el criterio de parada
@@ -278,7 +278,8 @@ def DFA(tsp, cant_luciernagas, max_call_objetive_function, coef_absorcion, cant_
         historial_completo.append(temporal)
         temporal = []
 
-        print("Mejor recorrido: " + str(poblacion[0].ruta) + " - " + str(poblacion[0].recorrido_total) + " - " + str(poblacion[0].intensidad_luz))
+        # print("Mejor recorrido: " + str(poblacion[0].ruta) + " - " + str(poblacion[0].recorrido_total) + " - " + str(poblacion[0].intensidad_luz))
+        print("mejor recorrido: " + str(poblacion[0].recorrido_total))
         # print("mejor recorrido total: " + str(poblacion[0].recorrido_total))
         print("contador_llamados: " + str(contador_llamados))
     
@@ -288,7 +289,7 @@ def DFA(tsp, cant_luciernagas, max_call_objetive_function, coef_absorcion, cant_
     # plt.xlabel('Iteraciones')
     # plt.show()
 
-    historial_completo = historial_completo[::20]
+    historial_completo = historial_completo[::50]
     plt.figure(figsize=(14, 12))
     plt.boxplot(historial_completo)
     plt.title('Convergencia de población')
@@ -302,8 +303,8 @@ def DFA(tsp, cant_luciernagas, max_call_objetive_function, coef_absorcion, cant_
 
 def objective(trial):
     # Define los rangos para los hiperparámetros que quieres optimizar
-    cant_luciernagas = trial.suggest_int('cant_luciernagas', 2, 5)
-    coef_absorcion = trial.suggest_float('coef_absorcion', 0.00001, 0.21)
+    cant_luciernagas = trial.suggest_int('cant_luciernagas', 3, 10)
+    coef_absorcion = trial.suggest_float('coef_absorcion', 0.0001, 0.21)
     cant_nuevas_luciernagas = trial.suggest_int('cant_nuevas_luciernagas', 2, 11)
 
     # leer tsp
@@ -333,7 +334,8 @@ def escribir_en_archivo(arreglos, nombre_entrada):
         with open("new_salida2.txt", 'a') as archivo:
             archivo.write('\n'+ "### " + nombre_entrada + " ###" + '\n')
             for arreglo in arreglos:
-                archivo.write(str(arreglo) + '\n')
+                minimo = min(arreglo)
+                archivo.write(str(arreglo) + " - " + str(minimo) +'\n')
             # archivo.write(str(arreglo) + '\n\n')
                 
         print(f"El arreglo se ha escrito exitosamente en salida.txt.")
@@ -342,25 +344,29 @@ def escribir_en_archivo(arreglos, nombre_entrada):
 
 def main():
     # set random seed
-    random.seed(2)
+    random.seed(3)
 
     # set starting time
     tiempo_inicial = time.time()
 
     # leer instancia TSP
     tsp = Tsp()
-    tsp.leer("./datasets/wi29.tsp")
+    tsp.leer("./datasets/uy734.tsp")
     tsp.escribir()
 
     # Variables
     cant_luciernagas = 5
-    max_call_objetive_function = 100000
-    coef_absorcion = 0.1324801200969674
+    max_call_objetive_function = 150000
+    coef_absorcion = 0.20322278084306258
     cant_nuevas_luciernagas = 10
 
     # Llamada DFA
     poblacion = DFA(tsp, cant_luciernagas, max_call_objetive_function, coef_absorcion, cant_nuevas_luciernagas)
     print("Mejor recorrido FINAL : " + str(poblacion[0].ruta) + " - " + str(poblacion[0].recorrido_total) + " - " + str(poblacion[0].intensidad_luz))
+    
+    # imprimir poblacion final
+    # for luciernaga in poblacion:
+    #     print("Ruta: " + str(luciernaga.ruta) + " - " + str(luciernaga.recorrido_total) + " - " + str(luciernaga.intensidad_luz))
 
     # Test mutacion random
     # luciernagas = generar_poblacion_inicial(tsp, 1)
@@ -373,7 +379,7 @@ def main():
     end_time = time.time()
     # display computation time
     print('\nTotal time:\t%.3f sec' % (end_time - tiempo_inicial))
-    # return poblacion
+    return poblacion
 
 if __name__ == "__main__":
     main()
@@ -386,3 +392,28 @@ if __name__ == "__main__":
     # uy734 = 79114
     # zi929 = 95345
     # lu980 = 11340
+
+    # num_executions = 21  # Número de ejecuciones
+    # results = []  # Almacenar resultados
+    # lengths = []
+    # all_lengths = []
+    # # datasets = ["./datasets/uy734.tsp", "./datasets/zi929.tsp", "./datasets/lu980.tsp"]
+    # # datasets = ["./datasets/qa194.tsp"]
+    # datasets = ["./datasets/uy734.tsp"]
+    # # datasets = ["./datasets/wi29.tsp", "./datasets/dj38.tsp", "./datasets/uy734.tsp", "./datasets/zi929.tsp", "./datasets/lu980.tsp"]
+
+    # for dataset in datasets:
+    #     for i in range(num_executions):
+    #         # Establecer una semilla aleatoria diferente en cada ejecución
+    #         random.seed(i)
+    #         # Realizar la ejecución
+    #         print(f"\nEjecución {i + 1} con semilla {i}:")
+    #         poblacion = main(dataset)
+    #         for luciernaga in poblacion:
+    #             lengths.append(luciernaga.recorrido_total)
+    #         all_lengths.append(lengths)
+    #         lengths = []
+    #     # escribir
+    #     escribir_en_archivo(all_lengths, dataset)
+    #     all_lengths = []
+    #     lengths = []

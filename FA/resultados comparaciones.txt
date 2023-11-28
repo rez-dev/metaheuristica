@@ -1,0 +1,51 @@
+# RANDOM con poblacion 3
+# Archivo: ### ./datasets/wi29.tsp ### - Media de los mejores valores: 28063.95238095238
+# Archivo: ### ./datasets/dj38.tsp ### - Media de los mejores valores: 6747.142857142857
+# Archivo: ### ./datasets/uy734.tsp ### - Media de los mejores valores: 372072.09523809527
+# Archivo: ### ./datasets/zi929.tsp ### - Media de los mejores valores: 497474.6666666667
+# Archivo: ### ./datasets/lu980.tsp ### - Media de los mejores valores: 78546.76190476191
+
+{'Archivo': 'salida random con optuna.txt', 'Ejecucion': 1, 'Minimo': 27603.0, 'Maximo': 29046.0, 'Indice_Min': 3, 'Indice_Max': 2}
+{'Archivo': 'salida random con optuna.txt', 'Ejecucion': 2, 'Minimo': 6656.0, 'Maximo': 7790.0, 'Indice_Min': 2, 'Indice_Max': 9}
+{'Archivo': 'salida random con optuna.txt', 'Ejecucion': 3, 'Minimo': 361482.0, 'Maximo': 384452.0, 'Indice_Min': 0, 'Indice_Max': 19}
+{'Archivo': 'salida random con optuna.txt', 'Ejecucion': 4, 'Minimo': 469754.0, 'Maximo': 513910.0, 'Indice_Min': 13, 'Indice_Max': 14}
+{'Archivo': 'salida random con optuna.txt', 'Ejecucion': 5, 'Minimo': 76437.0, 'Maximo': 81496.0, 'Indice_Min': 11, 'Indice_Max': 19}
+
+# RANDOM con poblacion 5
+# Archivo: ### ./datasets/wi29.tsp ### - Media de los mejores valores: 28044.904761904763
+# Archivo: ### ./datasets/dj38.tsp ### - Media de los mejores valores: 6833.9047619047615
+# Archivo: ### ./datasets/uy734.tsp ### - Media de los mejores valores: 419802.1904761905
+# Archivo: ### ./datasets/zi929.tsp ### - Media de los mejores valores: 554275.380952381
+# Archivo: ### ./datasets/lu980.tsp ### - Media de los mejores valores: 88136.33333333333
+
+{'Archivo': 'salida random con parametros random 5 poblacion.txt', 'Ejecucion': 1, 'Minimo': 27603.0, 'Maximo': 29009.0, 'Indice_Min': 5, 'Indice_Max': 3}
+{'Archivo': 'salida random con parametros random 5 poblacion.txt', 'Ejecucion': 2, 'Minimo': 6656.0, 'Maximo': 7572.0, 'Indice_Min': 0, 'Indice_Max': 17}
+{'Archivo': 'salida random con parametros random 5 poblacion.txt', 'Ejecucion': 3, 'Minimo': 409594.0, 'Maximo': 430512.0, 'Indice_Min': 18, 'Indice_Max': 14}
+{'Archivo': 'salida random con parametros random 5 poblacion.txt', 'Ejecucion': 4, 'Minimo': 539171.0, 'Maximo': 570708.0, 'Indice_Min': 10, 'Indice_Max': 1}
+{'Archivo': 'salida random con parametros random 5 poblacion.txt', 'Ejecucion': 5, 'Minimo': 86772.0, 'Maximo': 90893.0, 'Indice_Min': 7, 'Indice_Max': 15}
+
+# NBS con poblacion 3
+# Archivo: ### ./datasets/wi29.tsp ### - Media de los mejores valores: 28513.666666666668
+# Archivo: ### ./datasets/dj38.tsp ### - Media de los mejores valores: 6748.761904761905
+# Archivo: ### ./datasets/uy734.tsp ### - Media de los mejores valores: 96895.57142857143
+# Archivo: ### ./datasets/zi929.tsp ### - Media de los mejores valores: 113861.52380952382
+# Archivo: ### ./datasets/lu980.tsp ### - Media de los mejores valores: 13714.380952380952
+
+{'Archivo': 'salida nbs con parametros random optuna.txt', 'Ejecucion': 1, 'Minimo': 27603.0, 'Maximo': 29320.0, 'Indice_Min': 20, 'Indice_Max': 2}
+{'Archivo': 'salida nbs con parametros random optuna.txt', 'Ejecucion': 2, 'Minimo': 6656.0, 'Maximo': 7247.0, 'Indice_Min': 0, 'Indice_Max': 15}
+{'Archivo': 'salida nbs con parametros random optuna.txt', 'Ejecucion': 3, 'Minimo': 95301.0, 'Maximo': 98695.0, 'Indice_Min': 7, 'Indice_Max': 9}
+{'Archivo': 'salida nbs con parametros random optuna.txt', 'Ejecucion': 4, 'Minimo': 109940.0, 'Maximo': 119206.0, 'Indice_Min': 14, 'Indice_Max': 19}
+{'Archivo': 'salida nbs con parametros random optuna.txt', 'Ejecucion': 5, 'Minimo': 13396.0, 'Maximo': 14264.0, 'Indice_Min': 0, 'Indice_Max': 6}
+
+# NBS con poblacion 5
+# Archivo: ### ./datasets/wi29.tsp ### - Media de los mejores valores: 28389.809523809523
+# Archivo: ### ./datasets/dj38.tsp ### - Media de los mejores valores: 6701.0952380952385
+# Archivo: ### ./datasets/uy734.tsp ### - Media de los mejores valores: 96618.0
+# Archivo: ### ./datasets/zi929.tsp ### - Media de los mejores valores: 112954.52380952382
+# Archivo: ### ./datasets/lu980.tsp ### - Media de los mejores valores: 13666.333333333334
+
+{'Archivo': 'salida nbs con parametros random 5 poblacion.txt', 'Ejecucion': 1, 'Minimo': 27603.0, 'Maximo': 29260.0, 'Indice_Min': 1, 'Indice_Max': 19}
+{'Archivo': 'salida nbs con parametros random 5 poblacion.txt', 'Ejecucion': 2, 'Minimo': 6656.0, 'Maximo': 7156.0, 'Indice_Min': 0, 'Indice_Max': 10}
+{'Archivo': 'salida nbs con parametros random 5 poblacion.txt', 'Ejecucion': 3, 'Minimo': 94852.0, 'Maximo': 98713.0, 'Indice_Min': 17, 'Indice_Max': 4}
+{'Archivo': 'salida nbs con parametros random 5 poblacion.txt', 'Ejecucion': 4, 'Minimo': 109779.0, 'Maximo': 116755.0, 'Indice_Min': 11, 'Indice_Max': 19}
+{'Archivo': 'salida nbs con parametros random 5 poblacion.txt', 'Ejecucion': 5, 'Minimo': 13447.0, 'Maximo': 14003.0, 'Indice_Min': 0, 'Indice_Max': 6}

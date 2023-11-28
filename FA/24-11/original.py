@@ -178,11 +178,11 @@ def generar_luciernagas_nn(tsp, n):
         luciernagas.append(luciernaga)
     return luciernagas
 
-def mutacion_inversa_movimiento(tsp, luciernaga, distancia, cant_nuevas_luciernagas):
+def mutacion_inversa_movimiento(tsp, luciernaga, distancia, tamano_seccion_m):
     nuevas_luciernagas = []
     nueva_ruta = luciernaga.ruta[:]
 
-    for i in range(cant_nuevas_luciernagas):
+    for i in range(tamano_seccion_m):
         nueva_luciernaga = Firefly()  # Crear una nueva instancia en cada iteración
         inicio = random.randint(0, len(nueva_ruta) - distancia)
         tamano_seccion = random.randint(2, distancia)  # Longitud aleatoria del segmento entre 2 y la distancia
@@ -198,105 +198,80 @@ def mutacion_inversa_movimiento(tsp, luciernaga, distancia, cant_nuevas_lucierna
     return nuevas_luciernagas
 
 # Movimiento cuando no hay luciernaga mas atractiva
-def mutacion_inversa_random(tsp, luciernaga, cant_nuevas_luciernagas):
+def mutacion_inversa_random(tsp, luciernaga, tamano_seccion_m):
     nuevas_luciernagas = []
     copia_ruta = luciernaga.ruta[:]
-    # print("Ruta original: " + str(copia_ruta) + " - " + str(luciernaga.recorrido_total) + " - " + str(luciernaga.intensidad_luz))
 
-    for i in range(cant_nuevas_luciernagas):
-        nueva_luciernaga = Firefly()
-        # generar mutacion inversa de tamaño random
-        tamano_seccion = random.randint(2, len(copia_ruta) - 1)
-        inicio = random.randint(0, len(copia_ruta) - tamano_seccion)
-        fin = inicio + tamano_seccion
+    for i in range(tamano_seccion_m):
+        nueva_luciernaga = Firefly()  # Crear una nueva instancia en cada iteración
+        inicio = random.randint(0, len(copia_ruta) - tamano_seccion_m)
+        fin = inicio + tamano_seccion_m
         seccion_reversa = copia_ruta[inicio:fin][::-1]
-        copia_ruta = copia_ruta[:inicio] + seccion_reversa + copia_ruta[fin:]
-        nueva_luciernaga.ruta = copia_ruta[:]
+        nueva_ruta = copia_ruta[:inicio] + seccion_reversa + copia_ruta[fin:]
+        nueva_luciernaga.ruta = nueva_ruta[:]
         nueva_luciernaga.recorrido_total = nueva_luciernaga.costo_recorrido(tsp)
         nueva_luciernaga.intensidad_luz = 1.0 / nueva_luciernaga.recorrido_total
+        # print("Nueva luciernaga ran: " + str(nueva_luciernaga.ruta) + " - " + str(nueva_luciernaga.recorrido_total) + " - " + str(nueva_luciernaga.intensidad_luz))
         nuevas_luciernagas.append(nueva_luciernaga)
-        # print("inicio: " + str(inicio) + " - fin: " + str(fin) + " - tamano_seccion: " + str(tamano_seccion))
-        # print("Nueva luciernaga random: " + str(nueva_luciernaga.ruta) + " - " + str(nueva_luciernaga.recorrido_total) + " - " + str(nueva_luciernaga.intensidad_luz))
     return nuevas_luciernagas
 
 
-def DFA(tsp, cant_luciernagas, max_call_objetive_function, coef_absorcion, cant_nuevas_luciernagas):
+def DFA(tsp, cant_luciernagas, max_call_objetive_function, coef_absorcion, tamano_seccion_m):
     print("\n[ DFA Algoritm ]")
     contador_llamados = 0
     poblacion_temporal = []
     historial = []
-    historial_completo = []
-    temporal = []
 
     # Generar luciernagas iniciales
     poblacion = generar_poblacion_inicial(tsp, cant_luciernagas)
+    # for luciernaga in poblacion:
+        # print("Luciernaga inicial: " + str(luciernaga.ruta) + " - " + str(luciernaga.recorrido_total) + " - " + str(luciernaga.intensidad_luz))
     contador_llamados += cant_luciernagas
 
     # Iterar hasta que se cumpla el criterio de parada
     while contador_llamados < max_call_objetive_function:
         for luciernaga in poblacion:
             luciernaga_mas_atractiva = luciernaga.obtener_luciernaga_mas_atractiva(poblacion, coef_absorcion)
-
-            # Si hay luciernaga mas atractiva, se mueve hacia ella = mutacion inversa de tamaño [2, distancia]
+            # Si hay luciernaga mas atractiva
             if luciernaga_mas_atractiva != None:
+                # print("Luciernaga actual: " + str(luciernaga.ruta) + " - " + str(luciernaga.recorrido_total) + " - " + str(luciernaga.intensidad_luz))
+                # print("Luciernaga mas atractiva: " + str(luciernaga_mas_atractiva.ruta) + " - " + str(luciernaga_mas_atractiva.recorrido_total) + " - " + str(luciernaga_mas_atractiva.intensidad_luz))
 
-                # Calcular distancia
+                # calcular distancia
                 distancia = luciernaga.distancia_luciernaga(luciernaga_mas_atractiva)
+                # print("Distancia: " + str(distancia))
 
                 # Mover luciernaga
-                nuevas_luciernagas = mutacion_inversa_movimiento(tsp, luciernaga, distancia, cant_nuevas_luciernagas)
-                contador_llamados += cant_nuevas_luciernagas
+                nuevas_luciernagas = mutacion_inversa_movimiento(tsp, luciernaga, distancia, tamano_seccion_m)
+                # print("Nueva luciernaga: " + str(nueva_luciernaga.ruta) + " - " + str(nueva_luciernaga.recorrido_total) + " - " + str(nueva_luciernaga.intensidad_luz))
+                contador_llamados += 1
 
                 poblacion_temporal.append(luciernaga)
+                # poblacion_temporal.append(nueva_luciernaga)
                 for nueva_luciernaga in nuevas_luciernagas:
                     poblacion_temporal.append(nueva_luciernaga)
-
-            # Si es la luciernaga mas brillante, se mueve random = mutacion inversa de tamaño n
             else:
-                nuevas_luciernagas = mutacion_inversa_random(tsp, luciernaga, cant_nuevas_luciernagas)
-                contador_llamados += cant_nuevas_luciernagas
+                # print("Luciernaga actual: " + str(luciernaga.ruta) + " - " + str(luciernaga.recorrido_total) + " - " + str(luciernaga.intensidad_luz))
+                # print("No hay luciernaga mas atractiva")
+                nuevas_luciernagas = mutacion_inversa_random(tsp, luciernaga, tamano_seccion_m)
+                contador_llamados += tamano_seccion_m
 
                 poblacion_temporal.append(luciernaga)
                 for nueva_luciernaga in nuevas_luciernagas:
                     poblacion_temporal.append(nueva_luciernaga)
-
-        # Seleccionar mejores luciernagas
-        # Ordenar poblacion por recorrido total
+        # break
+        # seleccionar mejores luciernagas
         poblacion_temporal.sort(key=lambda x: x.recorrido_total)
-
-        # Seleccionar las mejores luciernagas
         poblacion_temporal = poblacion_temporal[:cant_luciernagas]
         poblacion = poblacion_temporal[:cant_luciernagas]
-
-        # Se reinicia la poblacion temporal
         poblacion_temporal = []
-
-        # Guardar mejor recorrido
         historial.append(poblacion[0].recorrido_total)
-        for luciernaga in poblacion:
-            temporal.append(luciernaga.recorrido_total)
-        historial_completo.append(temporal)
-        temporal = []
-
         print("Mejor recorrido: " + str(poblacion[0].ruta) + " - " + str(poblacion[0].recorrido_total) + " - " + str(poblacion[0].intensidad_luz))
-        # print("mejor recorrido total: " + str(poblacion[0].recorrido_total))
-        print("contador_llamados: " + str(contador_llamados))
     
     # graficar historial
-    # plt.plot(historial)
-    # plt.ylabel('Costo')
-    # plt.xlabel('Iteraciones')
-    # plt.show()
-
-    historial_completo = historial_completo[::20]
-    plt.figure(figsize=(14, 12))
-    plt.boxplot(historial_completo)
-    plt.title('Convergencia de población')
-    plt.xlabel('Distribución de población')
-    plt.ylabel('Costos de recorrido')
-    # plt.xticks(ticks=np.arange(1, len(historial_completo) + 1), labels=[f'iter {i}' for i in range(1, len(historial_completo) + 1)])
-    # plt.grid(True)
-    plt.tight_layout()
+    plt.plot(historial)
+    plt.ylabel('Costo')
+    plt.xlabel('Iteraciones')
     plt.show()
     return poblacion
 
@@ -304,7 +279,7 @@ def objective(trial):
     # Define los rangos para los hiperparámetros que quieres optimizar
     cant_luciernagas = trial.suggest_int('cant_luciernagas', 2, 5)
     coef_absorcion = trial.suggest_float('coef_absorcion', 0.00001, 0.21)
-    cant_nuevas_luciernagas = trial.suggest_int('cant_nuevas_luciernagas', 2, 11)
+    tamano_seccion_m = trial.suggest_int('tamano_seccion_m', 2, 11)
 
     # leer tsp
     tsp = Tsp()
@@ -312,7 +287,7 @@ def objective(trial):
     tsp.escribir()
     
     # Crear una instancia de DFA con los parámetros optimizados
-    poblacion = DFA(tsp, cant_luciernagas, 5000, coef_absorcion, cant_nuevas_luciernagas)
+    poblacion = DFA(tsp, cant_luciernagas, 5000, coef_absorcion, tamano_seccion_m)
     
     # Ejecutar tu función de objetivo con la población creada
     result = calcular_recorrido(poblacion[0], tsp)  # Reemplaza 'your_objective_function' con tu función de objetivo
@@ -327,53 +302,34 @@ def correr_optuna():
     # Obtener los mejores parámetros encontrados
     best_params = study.best_params
     print("Mejores parámetros:", best_params)
-
-def escribir_en_archivo(arreglos, nombre_entrada):
-    try:
-        with open("new_salida2.txt", 'a') as archivo:
-            archivo.write('\n'+ "### " + nombre_entrada + " ###" + '\n')
-            for arreglo in arreglos:
-                archivo.write(str(arreglo) + '\n')
-            # archivo.write(str(arreglo) + '\n\n')
                 
-        print(f"El arreglo se ha escrito exitosamente en salida.txt.")
-    except Exception as e:
-        print(f"Error al escribir en el archivo: {e}")                
 
 def main():
     # set random seed
-    random.seed(2)
+    random.seed(1)
 
     # set starting time
     tiempo_inicial = time.time()
 
     # leer instancia TSP
     tsp = Tsp()
-    tsp.leer("./datasets/wi29.tsp")
+    tsp.leer("./datasets/qa194.tsp")
     tsp.escribir()
 
     # Variables
-    cant_luciernagas = 5
+    cant_luciernagas = 2
     max_call_objetive_function = 100000
-    coef_absorcion = 0.1324801200969674
-    cant_nuevas_luciernagas = 10
+    coef_absorcion = 0.15408549015964856
+    tamano_seccion_m = 10
 
     # Llamada DFA
-    poblacion = DFA(tsp, cant_luciernagas, max_call_objetive_function, coef_absorcion, cant_nuevas_luciernagas)
+    poblacion = DFA(tsp, cant_luciernagas, max_call_objetive_function, coef_absorcion, tamano_seccion_m)
     print("Mejor recorrido FINAL : " + str(poblacion[0].ruta) + " - " + str(poblacion[0].recorrido_total) + " - " + str(poblacion[0].intensidad_luz))
-
-    # Test mutacion random
-    # luciernagas = generar_poblacion_inicial(tsp, 1)
-    # print("Ruta original: " + str(luciernagas[0].ruta) + " - " + str(luciernagas[0].recorrido_total) + " - " + str(luciernagas[0].intensidad_luz))
-
-    # nuevas_luciernagas = mutacion_inversa_random(tsp, luciernagas[0], 2)
-
 
     # set completion time
     end_time = time.time()
     # display computation time
     print('\nTotal time:\t%.3f sec' % (end_time - tiempo_inicial))
-    # return poblacion
 
 if __name__ == "__main__":
     main()

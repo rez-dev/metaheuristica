@@ -1,0 +1,7 @@
+Poblacion Aleatoria
+[I 2023-11-26 18:29:24,725] Trial 99 finished with value: 39795.0 and parameters: {'cant_luciernagas': 3, 'coef_absorcion': 0.08863733584375821, 'cant_nuevas_luciernagas': 5}. Best is trial 94 with value: 35326.0.
+Mejores parámetros: {'cant_luciernagas': 3, 'coef_absorcion': 0.09571696176578949, 'cant_nuevas_luciernagas': 4}
+
+Poblacion Mejor Vecino
+[I 2023-11-26 18:31:43,799] Trial 99 finished with value: 12017.0 and parameters: {'cant_luciernagas': 4, 'coef_absorcion': 0.056455096026511, 'cant_nuevas_luciernagas': 5}. Best is trial 56 with value: 11089.0.
+Mejores parámetros: {'cant_luciernagas': 5, 'coef_absorcion': 0.1009175459129528, 'cant_nuevas_luciernagas': 4}
