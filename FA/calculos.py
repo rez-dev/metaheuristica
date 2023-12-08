@@ -115,11 +115,11 @@ lu980 = 11340
 
 # Datos proporcionados
 datos_proporcionados = [
-{'Ejecucion': 1, 'Minimo': 27603.0, 'Maximo': 29260.0},
-{'Ejecucion': 2, 'Minimo': 6656.0, 'Maximo': 7156.0},
-{'Ejecucion': 3, 'Minimo': 94852.0, 'Maximo': 98713.0},
-{'Ejecucion': 4, 'Minimo': 109779.0, 'Maximo': 116755.0},
-{'Ejecucion': 5, 'Minimo': 13447.0, 'Maximo': 14003.0}
+{'Ejecucion': 1, 'Minimo': 27603.0, 'Maximo': 29320.0},
+{'Ejecucion': 2, 'Minimo': 6656.0, 'Maximo': 7247.0},
+{'Ejecucion': 3, 'Minimo': 95301.0, 'Maximo': 98695.0},
+{'Ejecucion': 4, 'Minimo': 109940.0, 'Maximo': 119206.0},
+{'Ejecucion': 5, 'Minimo': 13396.0, 'Maximo': 14264.0}
 ]
 
 # Función para calcular el gap en porcentaje
