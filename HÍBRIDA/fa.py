@@ -229,8 +229,8 @@ def DFA(tsp, cant_luciernagas, max_call_objetive_function, coef_absorcion, cant_
     temporal = []
 
     # Generar luciernagas iniciales
-    poblacion = generar_poblacion_inicial(tsp, cant_luciernagas)
-    # poblacion = generar_luciernagas_nn(tsp, cant_luciernagas)
+    # poblacion = generar_poblacion_inicial(tsp, cant_luciernagas)
+    poblacion = generar_luciernagas_nn(tsp, cant_luciernagas)
     contador_llamados += cant_luciernagas
 
     # Iterar hasta que se cumpla el criterio de parada
@@ -352,12 +352,12 @@ def main():
 
     # leer instancia TSP
     tsp = Tsp()
-    tsp.leer("./datasets/lu980.tsp")
+    tsp.leer("./datasets/kroA100.tsp")
     tsp.escribir()
 
     # Variables
     cant_luciernagas = 3
-    max_call_objetive_function = 150000
+    max_call_objetive_function = 100000
     coef_absorcion = 0.09571696176578949
     cant_nuevas_luciernagas = 4
 

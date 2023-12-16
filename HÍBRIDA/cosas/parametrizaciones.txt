@@ -1,0 +1,48 @@
+GLS ORIGINAL 100 trials 
+def objective(trial):
+    # Define el rango de búsqueda para el grado_penalizacion
+    grado_penalizacion = trial.suggest_float('grado_penalizacion', 0.1, 10.0)
+
+    # Define el rango de búsqueda para cantidad_vecinos
+    cantidad_vecinos = trial.suggest_int('cantidad_vecinos', 2, 10)
+    
+[I 2023-12-09 18:37:41,163] Trial 99 finished with value: 9357.0 and parameters: {'grado_penalizacion': 4.482093617356898, 'cantidad_vecinos': 6}. Best is trial 0 with value: 9352.0.
+Mejor valor de grado_penalizacion encontrado: 5.369751287469241
+Mejor valor de cantidad_vecinos encontrado: 5
+
+
+
+22781.0
+
+
+
+[I 2023-12-09 22:41:19,424] Trial 99 finished with value: 9838.0 and parameters: {'grado_penalizacion': 4.360249000427472, 'cantidad_vecinos': 4, 'no_mejoras_limite': 180}. Best is trial 93 with value: 9711.0.       
+Mejor valor de grado_penalizacion encontrado: 3.897757791138202
+Mejor valor de cantidad_vecinos encontrado: 5
+Mejor valor de limite_no_mejoras encontrado: 170
+
+
+
+
+def objective(trial):
+    # Define el rango de búsqueda para el grado_penalizacion
+    grado_penalizacion = trial.suggest_float('grado_penalizacion', 0.01, 10.0)
+
+    # Define el rango de búsqueda para cantidad_vecinos
+    cantidad_vecinos = trial.suggest_int('cantidad_vecinos', 2, 10)
+
+    # Define la cantidad de no mejoras
+    cantidad_no_mejoras = trial.suggest_int('cantidad_no_mejoras', 1, 200)
+
+    # Realiza la optimización utilizando el grado_penalizacion y cantidad_vecinos
+    tsp = Tsp()
+    tsp.leer("./datasets/qa194.tsp")
+    tsp.gen_vecindario(cantidad_vecinos)
+
+    datos_convergencia, solucion, datos_mejorados = guided_local_search(tsp, 5000, grado_penalizacion, cantidad_no_mejoras)
+
+    # Define la función objetivo, por ejemplo, minimizar la longitud del ruta
+    return solucion.recorrido_total
+
+[I 2023-12-11 21:57:31,826] Trial 99 finished with value: 9501.0 and parameters: {'grado_penalizacion': 5.814791860807681, 'cantidad_vecinos': 9, 'cantidad_no_mejoras': 28}. Best is trial 47 with value: 9352.0.
+Mejores parámetros: {'grado_penalizacion': 3.903954688575139, 'cantidad_vecinos': 10, 'cantidad_no_mejoras': 49}
