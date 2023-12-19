@@ -1,0 +1,31 @@
+GLS 
+[I 2023-12-16 19:38:13,937] Trial 99 finished with value: 699.0 and parameters: {'grado_penalizacion': 1.728135842547021, 'cantidad_vecinos': 5, 'no_mejoras_limite': 130}. Best is trial 18 with value: 676.0.
+Mejor valor de grado_penalizacion encontrado: 2.542343014584305
+Mejor valor de cantidad_vecinos encontrado: 10
+Mejor valor de limite_no_mejoras encontrado: 200
+
+[I 2023-12-17 00:31:07,528] Trial 99 finished with value: 691.0 and parameters: {'grado_penalizacion': 0.6491520188349158, 'cantidad_vecinos': 5, 'no_mejoras_limite': 140}. Best is trial 32 with value: 676.0.
+Mejor valor de grado_penalizacion encontrado: 2.169195921762086
+Mejor valor de cantidad_vecinos encontrado: 5
+Mejor valor de limite_no_mejoras encontrado: 170
+
+
+
+FA 
+[I 2023-12-17 18:05:57,157] Trial 99 finished with value: 787.0 and parameters: {'cant_luciernagas': 4, 'coef_absorcion': 0.02966966836973669, 'cant_nuevas_luciernagas': 5}. Best is trial 63 with value: 736.0.
+Mejores parámetros: {'cant_luciernagas': 4, 'coef_absorcion': 0.010503147050927274, 'cant_nuevas_luciernagas': 4}
+
+
+
+HYBRYD CON PORCENTAJE FA
+[I 2023-12-18 10:22:54,287] Trial 99 finished with value: 683.0 and parameters: {'cant_luciernagas': 3, 'coef_absorcion': 0.12215046581165004, 'cant_nuevas_luciernagas': 6, 'grado_penalizacion': 1.030089796675533, 'cantidad_vecinos': 5, 'no_mejoras_limite': 180, 'porcentaje_fa': 0.8}. Best is trial 88 with value: 675.0.
+Mejores parámetros: {'cant_luciernagas': 4, 'coef_absorcion': 0.11762690637008359, 'cant_nuevas_luciernagas': 5, 'grado_penalizacion': 0.10693500433314507, 'cantidad_vecinos': 5, 'no_mejoras_limite': 200, 'porcentaje_fa': 0.8}
+
+ESTA SI
+[I 2023-12-18 10:53:48,723] Trial 99 finished with value: 693.0 and parameters: {'cant_luciernagas': 6, 'coef_absorcion': 0.054652661177126735, 'cant_nuevas_luciernagas': 5, 'grado_penalizacion': 1.39169709911146, 'cantidad_vecinos': 5, 'no_mejoras_limite': 170, 'porcentaje_fa': 0.3}. Best is trial 75 with value: 675.0.
+Mejores parámetros: {'cant_luciernagas': 6, 'coef_absorcion': 0.07142664189169093, 'cant_nuevas_luciernagas': 6, 'grado_penalizacion': 1.3574804506207896, 'cantidad_vecinos': 5, 'no_mejoras_limite': 170, 'porcentaje_fa': 0.5}
+
+
+HYBRID CON PORCENTAJE FA 80%
+[I 2023-12-18 11:15:14,647] Trial 99 finished with value: 695.0 and parameters: {'cant_luciernagas': 6, 'coef_absorcion': 0.10265869858011822, 'cant_nuevas_luciernagas': 8, 'grado_penalizacion': 2.9473173235422787, 'cantidad_vecinos': 5, 'no_mejoras_limite': 170}. Best is trial 83 with value: 676.0.
+Mejores parámetros: {'cant_luciernagas': 7, 'coef_absorcion': 0.10224792999484185, 'cant_nuevas_luciernagas': 10, 'grado_penalizacion': 2.6525420394262387, 'cantidad_vecinos': 5, 'no_mejoras_limite': 180}

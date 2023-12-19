@@ -167,17 +167,17 @@ def actualizar_penalizacion(tsp,solucion):
     else:
         (solucion.penalizaciones)[next_v,v] = 1.0 # Se hace lo mismo para la arista inversa
 
-def guided_local_search(tsp, max_call_count,grado_penalizacion, limite_no_mejoras):
+def guided_local_search(tsp, solucion, max_call_count,grado_penalizacion, limite_no_mejoras):
     print('\n[algoritmo guided local search]')
     datos_convergencia = []
     datos_mejores = []
     contador = 0
 
     # inicializar clase de solucion
-    solucion = Solucion(tsp,grado_penalizacion)
+    # solucion = Solucion(tsp,grado_penalizacion)
     
     # inicializar ruta inicial random
-    ruta_random(tsp, solucion)
+    # ruta_random(tsp, solucion)
     
     # inicializa la solucion actual
     solucion_actual = Solucion(tsp,grado_penalizacion)
@@ -189,7 +189,6 @@ def guided_local_search(tsp, max_call_count,grado_penalizacion, limite_no_mejora
 
     # se inicializa el bucle de llamadas
     while contador < max_call_count:
-        # print(contador)
         mejor_recorrido = solucion.recorrido_total
         temp = contador
 
@@ -244,101 +243,67 @@ def cambiar_ruta(tsp, solucion, u, v):
     solucion.recorrido_total = solucion.largo(tsp)
     # print("call_count: " + str(solucion.call_count))
 
-# def dos_opt(tsp, solucion, solucion_actual, max_call_count,contador):
-#     nuevo_contador = contador
-#     mejora = False
-#     reiniciar = True
-#     while reiniciar:
-#         if nuevo_contador >= max_call_count:
-#             reiniciar = False
-#             break
-#         reiniciar = False
-#         # Generador bajo demanda de vecinos (tuplas de nodos)
-#         vecindario = ((u,v)
-#                 for u in solucion.ruta
-#                 for v in (tsp.vecinos)[u])
-#         for u,v in vecindario:
-#             # evaluar mejora con costo normal
-#             delta = evaluar_mejora(tsp, solucion_actual, u, v, 'distancia_euc') # Se evalua la mejora del ruta con el posible swap de los nodos
-#             if solucion_actual.recorrido_total + delta < solucion.recorrido_total - NUM_EPSILON: # Si se presenta mejoras en el ruta se actualiza el ruta (solucion = solucion_actual)
-#                 solucion.copiar(solucion_actual) 
-#                 cambiar_ruta(tsp, solucion, u, v) #Se cambia el solucion original
-#                 nuevo_contador += 1
-#             if nuevo_contador >= max_call_count:
-#                 reiniciar = False
-#                 break
-#             # evaluar mejora con costo penalizado
-#             delta = evaluar_mejora(tsp, solucion_actual, u, v, 'distancia_penalizada') # Se evalua la mejora del ruta con el posible swap de los nodos penalizados
-#             if delta < -NUM_EPSILON:  # Si se presenta mejoras significativas en el ruta se actualiza el current ruta
-#                 cambiar_ruta(tsp, solucion_actual, u, v) #Se cambia el solucion temporal
-#                 nuevo_contador += 1
-#                 mejora = True
-#                 reiniciar = True
-#                 if nuevo_contador >= max_call_count:
-#                     reiniciar = False
-#                 break
-#     return nuevo_contador
-def dos_opt(tsp, solucion, solucion_actual, max_call_count, contador, limite_no_mejoras):
+def dos_opt(tsp, solucion, solucion_actual, max_call_count,contador, limite_no_mejoras):
     nuevo_contador = contador
     mejora = False
     reiniciar = True
     sin_mejoras = 0  # Nuevo contador para intentos sin mejoras
 
     while reiniciar:
-        if nuevo_contador >= max_call_count or sin_mejoras >= limite_no_mejoras:
+        if nuevo_contador >= max_call_count or sin_mejoras >= limite_no_mejoras:  # Salir si se alcanza el límite de llamadas o de intentos sin mejoras
             reiniciar = False
             break
         reiniciar = False
-        # Ciclos para revisar cada arista de la ruta
-        for i in range(len(solucion.ruta)):
-            for j in range(i+1, len(solucion.ruta)):
-                u = solucion.ruta[i]
-                v = solucion.ruta[j]
-                # evaluar mejora con costo normal
-                delta = evaluar_mejora(tsp, solucion_actual, u, v, 'distancia_euc')
-                if solucion_actual.recorrido_total + delta < solucion.recorrido_total - NUM_EPSILON:
-                    solucion.copiar(solucion_actual)
-                    cambiar_ruta(tsp, solucion, u, v)
-                    nuevo_contador += 1
-                    mejora = True
-                    sin_mejoras = 0  # Reiniciar contador de intentos sin mejoras
-                else:
-                    sin_mejoras += 1  # Incrementar contador de intentos sin mejoras
+        # Generador bajo demanda de vecinos (tuplas de nodos)
+        vecindario = ((u,v)
+                for u in solucion.ruta
+                for v in (tsp.vecinos)[u])
+        # imprimir tamaño de vecindario
+        # print('tamaño de vecindario= {}'.format(sum(1 for _ in vecindario)))
+        for u,v in vecindario:
+            # evaluar mejora con costo normal
+            delta = evaluar_mejora(tsp, solucion_actual, u, v, 'distancia_euc') # Se evalua la mejora del ruta con el posible swap de los nodos
+            if solucion_actual.recorrido_total + delta < solucion.recorrido_total - NUM_EPSILON: # Si se presenta mejoras en el ruta se actualiza el ruta (solucion = solucion_actual)
+                solucion.copiar(solucion_actual) 
+                cambiar_ruta(tsp, solucion, u, v) #Se cambia el solucion original
+                nuevo_contador += 1
+                mejora = True
+                sin_mejoras = 0  # Reiniciar contador de intentos sin mejoras
+            else:
+                sin_mejoras += 1  # Incrementar contador de intentos sin mejoras
+            if nuevo_contador >= max_call_count or sin_mejoras >= limite_no_mejoras:
+                reiniciar = False
+                break
+            # evaluar mejora con costo penalizado
+            delta = evaluar_mejora(tsp, solucion_actual, u, v, 'distancia_penalizada') # Se evalua la mejora del ruta con el posible swap de los nodos penalizados
+            if delta < -NUM_EPSILON:  # Si se presenta mejoras significativas en el ruta se actualiza el current ruta
+                cambiar_ruta(tsp, solucion_actual, u, v) #Se cambia el solucion temporal
+                nuevo_contador += 1
+                mejora = True
+                reiniciar = True
+                sin_mejoras = 0  # Reiniciar contador de intentos sin mejoras
+            else:
+                sin_mejoras += 1  # Incrementar contador de intentos sin mejoras
 
-                if nuevo_contador >= max_call_count or sin_mejoras >= limite_no_mejoras:
-                    reiniciar = False
-                    break
+            if nuevo_contador >= max_call_count or sin_mejoras >= limite_no_mejoras:
+                reiniciar = False
+                break
 
-                # evaluar mejora con costo penalizado
-                delta = evaluar_mejora(tsp, solucion_actual, u, v, 'distancia_penalizada')
-                if delta < -NUM_EPSILON:
-                    cambiar_ruta(tsp, solucion_actual, u, v)
-                    nuevo_contador += 1
-                    mejora = True
-                    reiniciar = True
-                    sin_mejoras = 0  # Reiniciar contador de intentos sin mejoras
-                else:
-                    sin_mejoras += 1  # Incrementar contador de intentos sin mejoras
-
-                if nuevo_contador >= max_call_count or sin_mejoras >= limite_no_mejoras:
-                    reiniciar = False
-                    break
     return nuevo_contador
-            
 
 def objective(trial):
     # Define el rango de búsqueda para el grado_penalizacion
     grado_penalizacion = trial.suggest_float('grado_penalizacion', 0.1, 10.0)
 
     # Define el rango de búsqueda para cantidad_vecinos
-    cantidad_vecinos = trial.suggest_int('cantidad_vecinos', 2, 10)
+    cantidad_vecinos = trial.suggest_int('cantidad_vecinos', 2, 5)
 
     # Define el rango de búsqueda para limite_no_mejoras
     no_mejoras_limite = trial.suggest_int('no_mejoras_limite', 10, 200, step=10)
 
     # Realiza la optimización utilizando el grado_penalizacion y cantidad_vecinos
     tsp = Tsp()
-    tsp.leer("./datasets/qa194.tsp")
+    tsp.leer("./datasets/st70.tsp")
     tsp.gen_vecindario(cantidad_vecinos)
 
     datos_convergencia, solucion, datos_mejores = guided_local_search(tsp, 5000, grado_penalizacion, no_mejoras_limite)
@@ -363,29 +328,36 @@ def correr_optuna():
 # --------------------------------------------------------------------
 #   main
 # --------------------------------------------------------------------
-def main():
+def main(dataset):
     # parametros
     # grado_penalizacion = 5.265818846996781
-    grado_penalizacion = 3.897757791138202
-    max_call_count = 40000
+    # max_call_count = 100000
+    # cantidad_vecinos = 5
+    # limite_no_mejoras = 200
+    grado_penalizacion = 2.169195921762086
+    max_call_count = 100000
     cantidad_vecinos = 5
-    limite_no_mejoras = 20
+    limite_no_mejoras = 170
 
     # set random seed
-    # random.seed(0)
+    # random.seed(2)
 
     # set starting time
     tiempo_inicial = time.time()
 
     # leer instancia TSP
     tsp = Tsp()
-    tsp.leer("./datasets/kroB150.tsp")
+    tsp.leer(dataset)
     # tsp.leer(dataset)
     # tsp.leer(nombre_entrada)
     tsp.escribir()
 
     # generar lista de vecindarios
-    # tsp.gen_vecindario(cantidad_vecinos)
+    tsp.gen_vecindario(cantidad_vecinos)
+
+    # mostrar cantidad total de vecinos
+    print('cantidad total de vecinos= {}'.format(sum([len(tsp.vecinos[i]) for i in range(tsp.num_nodos)])))
+
 
     # resolver TSP
     # solucion = Solucion(tsp,grado_penalizacion)
@@ -396,9 +368,7 @@ def main():
     end_time = time.time()
     # display computation time
     print('\nTotal time:\t%.3f sec' % (end_time - tiempo_inicial))
-
-    # return solucion, solucion.recorrido_total
-    # return datos_convergencia, solucion.recorrido_total
+    return solucion.recorrido_total
 
     # Print convergence graph
     # print(datos_convergencia)
@@ -410,18 +380,19 @@ def main():
     # plt.show()
 
     # # DATASETS OPTIMUM VALUES
-    # qa194 = 9352
     # wi29 = 27603
     # dj38 = 6656
-    # uy734 = 79114
-    # zi929 = 95345
-    # lu980 = 11340
+    # berlin52 = 7542
+    # kroA100 = 21282
+    # kroB150 = 26130
+    # st70 = 675
 
 def escribir_en_archivo(arreglo, nombre_entrada):
     try:
-        with open("resultados.txt", 'a') as archivo:
+        with open("new_salida.txt", 'a') as archivo:
             archivo.write("### " + nombre_entrada + " ###" + '\n')
-            archivo.write(str(arreglo) + '\n\n')
+            minimo = min(arreglo)
+            archivo.write(str(arreglo) + " - " + str(minimo) +'\n')
                 
         print(f"El arreglo se ha escrito exitosamente en salida.txt.")
     except Exception as e:
@@ -429,49 +400,24 @@ def escribir_en_archivo(arreglo, nombre_entrada):
 
 # main ---------------------------------------------------------------
 if __name__ == "__main__":
-    main()
+    # main()
     # correr_optuna()
 
-
     # Ciclo de ejecuciones
-    # num_executions = 21  # Número de ejecuciones
-    # results = []  # Almacenar resultados
-    # lengths = []
-    # datasets = ["./datasets/uy734.tsp", "./datasets/zi929.tsp", "./datasets/lu980.tsp"]
-    # datasets = ["./datasets/uy734.tsp"]
-    # datasets = ["./datasets/wi29.tsp"]
+    num_executions = 21  # Número de ejecuciones
+    lengths = []
+    # datasets = ["./datasets/wi29.tsp","./datasets/dj38.tsp", "./datasets/berlin52.tsp", "./datasets/kroA100.tsp", "./datasets/kroB150.tsp"]
+    datasets = ["./datasets/berlin52.tsp", "./datasets/kroA100.tsp", "./datasets/kroB150.tsp"]
+    # datasets = [ "./datasets/dj38.tsp"]
 
-    # for dataset in datasets:
-    #     for i in range(num_executions):
-    #         # Establecer una semilla aleatoria diferente en cada ejecución
-    #         random.seed(i)
-
-    #         # Realizar la ejecución
-    #         print(f"\nEjecución {i + 1} con semilla {i}:")
-    #         main_result,largo = main(dataset)
-    #         results.append(main_result)
-    #         lengths.append(largo)
-    #         # plt.plot(results[i], label=f"Ejecución {i + 1}")
-
-    #     maximo_valor, posicion = max((numero, indice) for indice, numero in enumerate(lengths))
-    #     print(f"El máximo valor es {maximo_valor} y se encuentra en la posición {posicion}")
-    #     minimo_valor, posicion = min((numero, indice) for indice, numero in enumerate(lengths))
-    #     print(f"El mínimo valor es {minimo_valor} y se encuentra en la posición {posicion}")
-    #     print(lengths)
-    #     escribir_en_archivo(lengths, dataset)
-    # Imprimir los resultados de todas las ejecuciones
-    # for i, result in enumerate(results):
-    #     print(f"Resultado de la ejecución {i + 1}: {result}")
-    # plt.xlabel("Iteraciones")
-    # plt.ylabel("Distancia total")
-    # plt.title("Convergencia de todas las ejecuciones")
-    # plt.legend()
-    # plt.show()
-    # plt.boxplot(lengths)
-
-    # # Agregar título y etiquetas a los ejes
-    # plt.title('Diagrama de Cajas')
-    # plt.ylabel('Valores')
-
-    # # Mostrar el diagrama de cajas
-    # plt.show()
+    for dataset in datasets:
+        for i in range(num_executions):
+            # Establecer una semilla aleatoria diferente en cada ejecución
+            random.seed(i)
+            # Realizar la ejecución
+            print(f"\nEjecución {i + 1} con semilla {i}:")
+            recorrido_total = main(dataset)
+            lengths.append(recorrido_total)
+        # escribir
+        escribir_en_archivo(lengths, dataset)
+        lengths = []

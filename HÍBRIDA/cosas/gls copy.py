@@ -366,13 +366,13 @@ def correr_optuna():
 # --------------------------------------------------------------------
 #   main
 # --------------------------------------------------------------------
-def main(dataset):
+def main():
     # parametros
     # grado_penalizacion = 5.265818846996781
-    grado_penalizacion = 3.897757791138202
-    max_call_count = 40000
-    cantidad_vecinos = 5
-    limite_no_mejoras = 170
+    grado_penalizacion = 5.814791860807681
+    max_call_count = 100000
+    cantidad_vecinos = 9
+    limite_no_mejoras = 28
 
     # set random seed
     # random.seed(0)
@@ -383,7 +383,7 @@ def main(dataset):
     # leer instancia TSP
     tsp = Tsp()
     # tsp.leer("./datasets/dj38.tsp")
-    tsp.leer(dataset)
+    tsp.leer("./datasets/kroB150")
     # tsp.leer(nombre_entrada)
     tsp.escribir()
 

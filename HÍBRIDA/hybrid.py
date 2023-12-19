@@ -1,4 +1,4 @@
-# FA ALGORITHM FOR TSP
+# HYBRID FA GLS ALGORITHM
 # Rodrigo Escobar Zamorano
 
 import copy
@@ -9,6 +9,8 @@ import time
 
 from matplotlib import pyplot as plt
 import optuna
+
+import gls_modificado as gls
 
 
 class Tsp:
@@ -308,18 +310,43 @@ def objective(trial):
     coef_absorcion = trial.suggest_float('coef_absorcion', 0.0001, 0.21)
     cant_nuevas_luciernagas = trial.suggest_int('cant_nuevas_luciernagas', 4, 11)
 
+    grado_penalizacion = trial.suggest_float('grado_penalizacion', 0.1, 10.0)
+    cantidad_vecinos = trial.suggest_int('cantidad_vecinos', 2, 5)
+    no_mejoras_limite = trial.suggest_int('no_mejoras_limite', 10, 200, step=10)
+
+    # porcentaje_fa = trial.suggest_categorical('porcentaje_fa', [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.8, 0.9])
+
+    total_calls = 5000
+    porcentaje_fa = 0.8
+    porcentaje_gls = 1 - porcentaje_fa
+
+    max_call_fa = int(total_calls * porcentaje_fa)
+    max_call_gls = int(total_calls * porcentaje_gls)
+
     # leer tsp
     tsp = Tsp()
     tsp.leer("./datasets/st70.tsp")
     tsp.escribir()
+    tsp.gen_vecindario(cantidad_vecinos)
     
     # Crear una instancia de DFA con los parámetros optimizados
-    poblacion = DFA(tsp, cant_luciernagas, 5000, coef_absorcion, cant_nuevas_luciernagas)
+    poblacion = DFA(tsp, cant_luciernagas, max_call_fa, coef_absorcion, cant_nuevas_luciernagas)
     
-    # Ejecutar tu función de objetivo con la población creada
-    result = calcular_recorrido(poblacion[0], tsp)  # Reemplaza 'your_objective_function' con tu función de objetivo
+    mejor_ruta = poblacion[0].ruta
+    mejor_recorrido = poblacion[0].recorrido_total
+    # print("MEJOR FIREFLY : " + str(mejor_ruta) + " - " + str(mejor_recorrido))
+
+    # crear solucion
+    solucion = gls.Solucion(tsp,grado_penalizacion)
+    solucion.ruta = mejor_ruta
+    solucion.definir_pos()
+    solucion.recorrido_total = mejor_recorrido
+    # print('largo= {}'.format(solucion.recorrido_total))
+
+    # aplicar GLS
+    _, solucion, _ = gls.guided_local_search(tsp,solucion, max_call_gls,grado_penalizacion, no_mejoras_limite)
     
-    return result
+    return solucion.recorrido_total
 
 def correr_optuna():
     # Ejecutar la optimización con Optuna
@@ -330,22 +357,20 @@ def correr_optuna():
     best_params = study.best_params
     print("Mejores parámetros:", best_params)
 
-def escribir_en_archivo(arreglos, nombre_entrada):
+def escribir_en_archivo(arreglo, nombre_entrada):
     try:
-        with open("new_salida3.txt", 'a') as archivo:
-            archivo.write('\n'+ "### " + nombre_entrada + " ###" + '\n')
-            for arreglo in arreglos:
-                minimo = min(arreglo)
-                archivo.write(str(arreglo) + " - " + str(minimo) +'\n')
-            # archivo.write(str(arreglo) + '\n\n')
+        with open("new_salida.txt", 'a') as archivo:
+            archivo.write("### " + nombre_entrada + " ###" + '\n')
+            minimo = min(arreglo)
+            archivo.write(str(arreglo) + " - " + str(minimo) +'\n')
                 
         print(f"El arreglo se ha escrito exitosamente en salida.txt.")
     except Exception as e:
-        print(f"Error al escribir en el archivo: {e}")                
+        print(f"Error al escribir en el archivo: {e}")            
 
 def main(dataset):
     # set random seed
-    # random.seed(11)
+    # random.seed(1)
 
     # set starting time
     tiempo_inicial = time.time()
@@ -354,40 +379,50 @@ def main(dataset):
     tsp = Tsp()
     tsp.leer(dataset)
     tsp.escribir()
+    tsp.gen_vecindario(5)
 
     # Variables
-    # cant_luciernagas = 3
-    # max_call_objetive_function = 100000
-    # coef_absorcion = 0.09571696176578949
-    # cant_nuevas_luciernagas = 4
-    cant_luciernagas = 4
-    max_call_objetive_function = 100000
-    coef_absorcion = 0.010503147050927274
-    cant_nuevas_luciernagas = 4
+    total_calls = 100000
+    porcentaje_fa = 0.5
+    porcentaje_gls = 1 - porcentaje_fa
+    
+    cant_luciernagas = 6
+    max_call_objetive_function = int(total_calls * porcentaje_fa)
+    coef_absorcion = 0.07142664189169093
+    cant_nuevas_luciernagas = 6
+
+    grado_penalizacion = 1.3574804506207896
+    max_call_count = int(total_calls * porcentaje_gls)
+    cantidad_vecinos = 5
+    limite_no_mejoras = 170
 
     # Llamada DFA
     poblacion = DFA(tsp, cant_luciernagas, max_call_objetive_function, coef_absorcion, cant_nuevas_luciernagas)
-    print("Mejor recorrido FINAL : " + str(poblacion[0].ruta) + " - " + str(poblacion[0].recorrido_total) + " - " + str(poblacion[0].intensidad_luz))
-    
-    # imprimir poblacion final
-    # for luciernaga in poblacion:
-    #     print("Ruta: " + str(luciernaga.ruta) + " - " + str(luciernaga.recorrido_total) + " - " + str(luciernaga.intensidad_luz))
 
-    # Test mutacion random
-    # luciernagas = generar_poblacion_inicial(tsp, 1)
-    # print("Ruta original: " + str(luciernagas[0].ruta) + " - " + str(luciernagas[0].recorrido_total) + " - " + str(luciernagas[0].intensidad_luz))
+    # seleccionar mejor ruta
+    mejor_ruta = poblacion[0].ruta
+    mejor_recorrido = poblacion[0].recorrido_total
+    print("MEJOR FIREFLY : " + str(mejor_ruta) + " - " + str(mejor_recorrido))
 
-    # nuevas_luciernagas = mutacion_inversa_random(tsp, luciernagas[0], 2)
+    # crear solucion
+    solucion = gls.Solucion(tsp,grado_penalizacion)
+    solucion.ruta = mejor_ruta
+    solucion.definir_pos()
+    solucion.recorrido_total = mejor_recorrido
+    print('largo= {}'.format(solucion.recorrido_total))
 
+    # aplicar GLS
+    datos_convergencia, solucion, datos_mejores = gls.guided_local_search(tsp,solucion, max_call_count,grado_penalizacion, limite_no_mejoras)
+    print("MEJOR GLS : " + str(solucion.ruta) + " - " + str(solucion.recorrido_total))
 
     # set completion time
     end_time = time.time()
     # display computation time
     print('\nTotal time:\t%.3f sec' % (end_time - tiempo_inicial))
-    return poblacion
+    return solucion
 
 if __name__ == "__main__":
-    # main()
+    # main("./datasets/wi29.tsp")
     # correr_optuna()
 
     # # DATASETS OPTIMUM VALUES
@@ -413,12 +448,10 @@ if __name__ == "__main__":
             random.seed(i)
             # Realizar la ejecución
             print(f"\nEjecución {i + 1} con semilla {i}:")
-            poblacion = main(dataset)
-            for luciernaga in poblacion:
-                lengths.append(luciernaga.recorrido_total)
-            all_lengths.append(lengths)
-            lengths = []
+            solucion = main(dataset)
+            lengths.append(solucion.recorrido_total)
         # escribir
-        escribir_en_archivo(all_lengths, dataset)
-        all_lengths = []
+        escribir_en_archivo(lengths, dataset)
         lengths = []
+
+
