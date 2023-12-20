@@ -340,7 +340,7 @@ def main(dataset):
     limite_no_mejoras = 170
 
     # set random seed
-    # random.seed(2)
+    random.seed(5)
 
     # set starting time
     tiempo_inicial = time.time()
@@ -368,16 +368,16 @@ def main(dataset):
     end_time = time.time()
     # display computation time
     print('\nTotal time:\t%.3f sec' % (end_time - tiempo_inicial))
-    return solucion.recorrido_total
+    # return solucion.recorrido_total
 
     # Print convergence graph
     # print(datos_convergencia)
-    # plt.plot(datos_convergencia)
-    # plt.plot(datos_mejores)
-    # plt.xlabel("Iteraciones")
-    # plt.ylabel("Distancia total")
-    # plt.title("Convergencia")
-    # plt.show()
+    plt.plot(datos_convergencia)
+    plt.plot(datos_mejores)
+    plt.xlabel("Iteraciones")
+    plt.ylabel("Costo recorrido")
+    plt.title("Convergencia solución única")
+    plt.show()
 
     # # DATASETS OPTIMUM VALUES
     # wi29 = 27603
@@ -400,24 +400,24 @@ def escribir_en_archivo(arreglo, nombre_entrada):
 
 # main ---------------------------------------------------------------
 if __name__ == "__main__":
-    # main()
+    main("./datasets/kroB150.tsp")
     # correr_optuna()
 
     # Ciclo de ejecuciones
-    num_executions = 21  # Número de ejecuciones
-    lengths = []
-    # datasets = ["./datasets/wi29.tsp","./datasets/dj38.tsp", "./datasets/berlin52.tsp", "./datasets/kroA100.tsp", "./datasets/kroB150.tsp"]
-    datasets = ["./datasets/berlin52.tsp", "./datasets/kroA100.tsp", "./datasets/kroB150.tsp"]
-    # datasets = [ "./datasets/dj38.tsp"]
+    # num_executions = 21  # Número de ejecuciones
+    # lengths = []
+    # # datasets = ["./datasets/wi29.tsp","./datasets/dj38.tsp", "./datasets/berlin52.tsp", "./datasets/kroA100.tsp", "./datasets/kroB150.tsp"]
+    # datasets = ["./datasets/berlin52.tsp", "./datasets/kroA100.tsp", "./datasets/kroB150.tsp"]
+    # # datasets = [ "./datasets/dj38.tsp"]
 
-    for dataset in datasets:
-        for i in range(num_executions):
-            # Establecer una semilla aleatoria diferente en cada ejecución
-            random.seed(i)
-            # Realizar la ejecución
-            print(f"\nEjecución {i + 1} con semilla {i}:")
-            recorrido_total = main(dataset)
-            lengths.append(recorrido_total)
-        # escribir
-        escribir_en_archivo(lengths, dataset)
-        lengths = []
+    # for dataset in datasets:
+    #     for i in range(num_executions):
+    #         # Establecer una semilla aleatoria diferente en cada ejecución
+    #         random.seed(i)
+    #         # Realizar la ejecución
+    #         print(f"\nEjecución {i + 1} con semilla {i}:")
+    #         recorrido_total = main(dataset)
+    #         lengths.append(recorrido_total)
+    #     # escribir
+    #     escribir_en_archivo(lengths, dataset)
+    #     lengths = []

@@ -292,16 +292,16 @@ def DFA(tsp, cant_luciernagas, max_call_objetive_function, coef_absorcion, cant_
     # plt.xlabel('Iteraciones')
     # plt.show()
 
-    # historial_completo = historial_completo[::50]
-    # plt.figure(figsize=(14, 12))
-    # plt.boxplot(historial_completo)
-    # plt.title('Convergencia de población')
-    # plt.xlabel('Distribución de población')
-    # plt.ylabel('Costos de recorrido')
-    # # plt.xticks(ticks=np.arange(1, len(historial_completo) + 1), labels=[f'iter {i}' for i in range(1, len(historial_completo) + 1)])
-    # # plt.grid(True)
-    # plt.tight_layout()
-    # plt.show()
+    historial_completo = historial_completo[::25]
+    plt.figure(figsize=(14, 12))
+    plt.boxplot(historial_completo)
+    plt.title('Convergencia de población')
+    plt.xlabel('Distribución de población')
+    plt.ylabel('Costos de recorrido')
+    # plt.xticks(ticks=np.arange(1, len(historial_completo) + 1), labels=[f'iter {i}' for i in range(1, len(historial_completo) + 1)])
+    # plt.grid(True)
+    plt.tight_layout()
+    plt.show()
     return poblacion
 
 def objective(trial):
@@ -370,7 +370,7 @@ def escribir_en_archivo(arreglo, nombre_entrada):
 
 def main(dataset):
     # set random seed
-    # random.seed(1)
+    random.seed(2)
 
     # set starting time
     tiempo_inicial = time.time()
@@ -415,6 +415,13 @@ def main(dataset):
     datos_convergencia, solucion, datos_mejores = gls.guided_local_search(tsp,solucion, max_call_count,grado_penalizacion, limite_no_mejoras)
     print("MEJOR GLS : " + str(solucion.ruta) + " - " + str(solucion.recorrido_total))
 
+    plt.plot(datos_convergencia)
+    plt.plot(datos_mejores)
+    plt.xlabel("Iteraciones")
+    plt.ylabel("Costo recorrido")
+    plt.title("Convergencia solución única")
+    plt.show()
+
     # set completion time
     end_time = time.time()
     # display computation time
@@ -422,7 +429,7 @@ def main(dataset):
     return solucion
 
 if __name__ == "__main__":
-    # main("./datasets/wi29.tsp")
+    main("./datasets/kroB150.tsp")
     # correr_optuna()
 
     # # DATASETS OPTIMUM VALUES
@@ -433,25 +440,25 @@ if __name__ == "__main__":
     # zi929 = 95345
     # lu980 = 11340
 
-    num_executions = 21  # Número de ejecuciones
-    results = []  # Almacenar resultados
-    lengths = []
-    all_lengths = []
-    # datasets = ["./datasets/uy734.tsp", "./datasets/zi929.tsp", "./datasets/lu980.tsp"]
-    # datasets = ["./datasets/qa194.tsp"]
-    # datasets = ["./datasets/wi29.tsp"]
-    # datasets = [ "./datasets/wi29.tsp", "./datasets/dj38.tsp", "./datasets/uy734.tsp", "./datasets/zi929.tsp", "./datasets/lu980.tsp"]
-    datasets = ["./datasets/wi29.tsp","./datasets/dj38.tsp", "./datasets/berlin52.tsp", "./datasets/kroA100.tsp", "./datasets/kroB150.tsp"]
-    for dataset in datasets:
-        for i in range(num_executions):
-            # Establecer una semilla aleatoria diferente en cada ejecución
-            random.seed(i)
-            # Realizar la ejecución
-            print(f"\nEjecución {i + 1} con semilla {i}:")
-            solucion = main(dataset)
-            lengths.append(solucion.recorrido_total)
-        # escribir
-        escribir_en_archivo(lengths, dataset)
-        lengths = []
+    # num_executions = 21  # Número de ejecuciones
+    # results = []  # Almacenar resultados
+    # lengths = []
+    # all_lengths = []
+    # # datasets = ["./datasets/uy734.tsp", "./datasets/zi929.tsp", "./datasets/lu980.tsp"]
+    # # datasets = ["./datasets/qa194.tsp"]
+    # # datasets = ["./datasets/wi29.tsp"]
+    # # datasets = [ "./datasets/wi29.tsp", "./datasets/dj38.tsp", "./datasets/uy734.tsp", "./datasets/zi929.tsp", "./datasets/lu980.tsp"]
+    # datasets = ["./datasets/wi29.tsp","./datasets/dj38.tsp", "./datasets/berlin52.tsp", "./datasets/kroA100.tsp", "./datasets/kroB150.tsp"]
+    # for dataset in datasets:
+    #     for i in range(num_executions):
+    #         # Establecer una semilla aleatoria diferente en cada ejecución
+    #         random.seed(i)
+    #         # Realizar la ejecución
+    #         print(f"\nEjecución {i + 1} con semilla {i}:")
+    #         solucion = main(dataset)
+    #         lengths.append(solucion.recorrido_total)
+    #     # escribir
+    #     escribir_en_archivo(lengths, dataset)
+    #     lengths = []
 
 

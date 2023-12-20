@@ -290,16 +290,16 @@ def DFA(tsp, cant_luciernagas, max_call_objetive_function, coef_absorcion, cant_
     # plt.xlabel('Iteraciones')
     # plt.show()
 
-    # historial_completo = historial_completo[::50]
-    # plt.figure(figsize=(14, 12))
-    # plt.boxplot(historial_completo)
-    # plt.title('Convergencia de población')
-    # plt.xlabel('Distribución de población')
-    # plt.ylabel('Costos de recorrido')
-    # # plt.xticks(ticks=np.arange(1, len(historial_completo) + 1), labels=[f'iter {i}' for i in range(1, len(historial_completo) + 1)])
-    # # plt.grid(True)
-    # plt.tight_layout()
-    # plt.show()
+    historial_completo = historial_completo[::50]
+    plt.figure(figsize=(14, 12))
+    plt.boxplot(historial_completo)
+    plt.title('Convergencia de población')
+    plt.xlabel('Distribución de población')
+    plt.ylabel('Costos de recorrido')
+    # plt.xticks(ticks=np.arange(1, len(historial_completo) + 1), labels=[f'iter {i}' for i in range(1, len(historial_completo) + 1)])
+    # plt.grid(True)
+    plt.tight_layout()
+    plt.show()
     return poblacion
 
 def objective(trial):
@@ -345,7 +345,7 @@ def escribir_en_archivo(arreglos, nombre_entrada):
 
 def main(dataset):
     # set random seed
-    # random.seed(11)
+    random.seed(5)
 
     # set starting time
     tiempo_inicial = time.time()
@@ -387,7 +387,7 @@ def main(dataset):
     return poblacion
 
 if __name__ == "__main__":
-    # main()
+    main("./datasets/kroB150.tsp")
     # correr_optuna()
 
     # # DATASETS OPTIMUM VALUES
@@ -398,27 +398,27 @@ if __name__ == "__main__":
     # zi929 = 95345
     # lu980 = 11340
 
-    num_executions = 21  # Número de ejecuciones
-    results = []  # Almacenar resultados
-    lengths = []
-    all_lengths = []
-    # datasets = ["./datasets/uy734.tsp", "./datasets/zi929.tsp", "./datasets/lu980.tsp"]
-    # datasets = ["./datasets/qa194.tsp"]
-    # datasets = ["./datasets/wi29.tsp"]
-    # datasets = [ "./datasets/wi29.tsp", "./datasets/dj38.tsp", "./datasets/uy734.tsp", "./datasets/zi929.tsp", "./datasets/lu980.tsp"]
-    datasets = ["./datasets/wi29.tsp","./datasets/dj38.tsp", "./datasets/berlin52.tsp", "./datasets/kroA100.tsp", "./datasets/kroB150.tsp"]
-    for dataset in datasets:
-        for i in range(num_executions):
-            # Establecer una semilla aleatoria diferente en cada ejecución
-            random.seed(i)
-            # Realizar la ejecución
-            print(f"\nEjecución {i + 1} con semilla {i}:")
-            poblacion = main(dataset)
-            for luciernaga in poblacion:
-                lengths.append(luciernaga.recorrido_total)
-            all_lengths.append(lengths)
-            lengths = []
-        # escribir
-        escribir_en_archivo(all_lengths, dataset)
-        all_lengths = []
-        lengths = []
+    # num_executions = 21  # Número de ejecuciones
+    # results = []  # Almacenar resultados
+    # lengths = []
+    # all_lengths = []
+    # # datasets = ["./datasets/uy734.tsp", "./datasets/zi929.tsp", "./datasets/lu980.tsp"]
+    # # datasets = ["./datasets/qa194.tsp"]
+    # # datasets = ["./datasets/wi29.tsp"]
+    # # datasets = [ "./datasets/wi29.tsp", "./datasets/dj38.tsp", "./datasets/uy734.tsp", "./datasets/zi929.tsp", "./datasets/lu980.tsp"]
+    # datasets = ["./datasets/wi29.tsp","./datasets/dj38.tsp", "./datasets/berlin52.tsp", "./datasets/kroA100.tsp", "./datasets/kroB150.tsp"]
+    # for dataset in datasets:
+    #     for i in range(num_executions):
+    #         # Establecer una semilla aleatoria diferente en cada ejecución
+    #         random.seed(i)
+    #         # Realizar la ejecución
+    #         print(f"\nEjecución {i + 1} con semilla {i}:")
+    #         poblacion = main(dataset)
+    #         for luciernaga in poblacion:
+    #             lengths.append(luciernaga.recorrido_total)
+    #         all_lengths.append(lengths)
+    #         lengths = []
+    #     # escribir
+    #     escribir_en_archivo(all_lengths, dataset)
+    #     all_lengths = []
+    #     lengths = []
