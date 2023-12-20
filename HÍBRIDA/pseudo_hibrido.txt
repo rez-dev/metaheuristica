@@ -1,0 +1,48 @@
+    Begin
+        List<Firefly> temp = new List<Firefly>
+        Firefly[] x = new Firefly[p]
+        for i = I to p do
+            x[i] = Generate_Initial_Solution()
+        endfor
+        repeat
+            for i = I to p do
+                Firefly f = Get_Most_Attractive_Firefly(x[i])
+                if (f != null) then
+                    for j = I to m do
+                        Firefly fnew = Move_Firefly(x[i], f)
+                        temp.Add(fnew)
+                    endfor
+                else
+                    for j = 1 to m do
+                        Firefly fnew = Move_Random(x[i])
+                        temp.Add(fnew)
+                    endfor
+                endif
+            endfor
+            x = Get_Brightest_Fireflies(temp)
+            temp.Clear()
+        until stop condition true
+        Output(x)
+    end
+
+Begin
+    List<Firefly> poblation = DFA(cant_luciernagas, max_call_fa, coef_absorcion, cant_nuevas_luciernagas)
+    List<Firefly> poblation = ordenar()
+    best_sol = poblation[0]
+    gen_nb(cantidad_vecinos)
+    final_sol = gls(best_sol,max_call_gls, grado_penalizacion, limite_no_mejoras)
+    Output(final_sol)
+end
+
+
+
+guided_local_search(tsp, mall_call_count, penalty_ratio)
+    solucion_inicial = generar_solucion_inicial()
+    mejor_solucion = solucion_inicial
+    MIENTRAS contador < mall_call_count HACER
+        mejor_vecino = 2_opt(tsp,solucion_actual)
+        penalizar(mejor_vecino)
+        SI mejor_vecino.costo < mejor_solucion.costo
+            mejor_solucion = mejor_vecino
+    FIN MIENTRAS
+    RETORNAR mejor_solucion
